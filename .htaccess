@@ -1,0 +1,5 @@
+# Service worker e manifesto sem cache longo (atualização do PWA chega na hora)
+<FilesMatch "^(sw\.js|manifest\.webmanifest|index\.html)$">
+  Header set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
+AddType application/manifest+json .webmanifest

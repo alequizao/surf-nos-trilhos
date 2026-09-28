@@ -1,0 +1,249 @@
+<!doctype html>
+<!-- Surf nos Trilhos · Desenvolvido por Alequizao <alequizao.dev@gmail.com> · https://github.com/alequizao · © 2026 Alequizao. Todos os direitos reservados. -->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Surf nos Trilhos — jogo de corrida 3D grátis no navegador | Alequizão</title>
+<meta name="description" content="Surf nos Trilhos: jogo de corrida infinita 3D grátis, estilo Subway Surfers, direto no navegador do celular ou PC. Corra pelos trilhos de Maceió, desvie dos trens, pegue moedas, use jetpack e fuja do vigia. Sem instalar, funciona offline.">
+<meta name="keywords" content="jogo de corrida, corrida infinita, endless runner, jogo tipo subway surfers, jogo grátis online, jogo 3D navegador, jogo de celular sem instalar, surf nos trilhos, jogo de trem, Maceió, Alequizão">
+<meta name="author" content="Alequizao — alequizao.dev@gmail.com">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://alequizao.com/surf/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Alequizão">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://alequizao.com/surf/">
+<meta property="og:title" content="Surf nos Trilhos — corrida 3D grátis no navegador">
+<meta property="og:description" content="Corra pelos trilhos, desvie dos trens, pegue moedas e fuja do vigia. Grátis, no celular e no PC, sem instalar.">
+<meta property="og:image" content="https://alequizao.com/surf/og-imagem.jpg?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cena do jogo Surf nos Trilhos: personagem correndo nos trilhos entre prédios e coqueiros, com o vigia atrás">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Surf nos Trilhos — corrida 3D grátis no navegador">
+<meta name="twitter:description" content="Corra pelos trilhos, desvie dos trens, pegue moedas e fuja do vigia. Grátis, sem instalar.">
+<meta name="twitter:image" content="https://alequizao.com/surf/og-imagem.jpg?v=1">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"VideoGame","name":"Surf nos Trilhos","url":"https://alequizao.com/surf/",
+"description":"Jogo de corrida infinita 3D grátis no navegador: corra pelos trilhos, desvie dos trens, pegue moedas e poderes (ímã, jetpack, tênis mola, pontos 2x) e fuja do vigia e do cachorro. Loja de personagens e pranchas, missões e multiplicador. Funciona offline como app (PWA).",
+"image":"https://alequizao.com/surf/og-imagem.jpg","inLanguage":"pt-BR","genre":["Corrida infinita","Endless runner","Ação","Casual"],
+"gamePlatform":["Navegador","Android","iOS","Windows","macOS","Linux"],"applicationCategory":"GameApplication","operatingSystem":"Qualquer (navegador)",
+"playMode":"SinglePlayer","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},
+"author":{"@type":"Person","name":"Alequizao","email":"alequizao.dev@gmail.com","url":"https://github.com/alequizao"},
+"publisher":{"@type":"Organization","name":"Alequizão","url":"https://alequizao.com/"},
+"softwareVersion":"1.1.0","datePublished":"2026-09-27","dateModified":"2026-09-28"}
+</script>
+<meta name="theme-color" content="#0f1c3f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='c' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%231b2a6e'/%3E%3Cstop offset='.55' stop-color='%23b0407a'/%3E%3Cstop offset='1' stop-color='%23ffb347'/%3E%3C/linearGradient%3E%3CradialGradient id='m' cx='.35' cy='.3' r='.8'%3E%3Cstop offset='0' stop-color='%23fffbe3'/%3E%3Cstop offset='.45' stop-color='%23ffd23f'/%3E%3Cstop offset='1' stop-color='%23d98a00'/%3E%3C/radialGradient%3E%3CclipPath id='k'%3E%3Crect width='64' height='64' rx='14'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23k)'%3E%3Crect width='64' height='30' fill='url(%23c)'/%3E%3Ccircle cx='32' cy='25' r='11' fill='%23ffe27a'/%3E%3Crect y='30' width='64' height='34' fill='%234a3a40'/%3E%3Cpath d='M22 38h20M18 45h28M13 54h38' stroke='%238a5a3a' stroke-width='3.5'/%3E%3Cpath d='M30 30L14 66M34 30L50 66' stroke='%23e6e9f2' stroke-width='3.5'/%3E%3Crect x='23' y='17' width='18' height='16' rx='4' fill='%23e8ecf4' stroke='%230b1433' stroke-width='1.5'/%3E%3Crect x='25.5' y='19.5' width='13' height='6' rx='1.5' fill='%236a3f86'/%3E%3Crect x='23.5' y='27' width='17' height='2.2' fill='%232f6bff'/%3E%3Ccircle cx='46' cy='47' r='11' fill='%23b86d00'/%3E%3Ccircle cx='45' cy='46' r='10' fill='url(%23m)' stroke='%23a45f00' stroke-width='1.5'/%3E%3Cpath d='M45 40.5l1.7 3.6 3.9.4-2.9 2.6.8 3.8-3.5-2-3.5 2 .8-3.8-2.9-2.6 3.9-.4z' fill='%23fff2a8' stroke='%23a45f00' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css?v=1.1.0">
+</head>
+<body>
+<!-- texto para buscadores, IAs e leitores de tela (o jogo em si é desenhado no canvas) -->
+<main class="so-leitor">
+  <h1>Surf nos Trilhos — jogo de corrida infinita 3D grátis</h1>
+  <p>Surf nos Trilhos é um jogo de corrida infinita (endless runner) em 3D, no estilo Subway Surfers, que roda direto no navegador do celular ou do computador, sem instalar. Você corre pelos trilhos de uma cidade litorânea inspirada em Maceió, com prédios, coqueiros e muros grafitados, desvia de trens parados e de trens vindo na contramão, pula barreiras, rola por baixo das placas ABAIXE!, sobe rampas para correr em cima dos vagões e foge do vigia e do cachorro dele.</p>
+  <h2>Como jogar</h2>
+  <p>Deslize para os lados (ou use as setas / A e D) para trocar de trilho, para cima (↑, W ou Espaço) para pular, para baixo (↓ ou S) para rolar. Toque duas vezes (ou B) para usar a prancha, que aguenta uma batida.</p>
+  <h2>Recursos</h2>
+  <ul><li>Poderes: ímã de moedas, jetpack, tênis mola e pontos em dobro</li><li>Loja com personagens (Léo, Duda, Bento e Nina Neon), pranchas e melhorias</li><li>Missões com multiplicador de pontos</li><li>Trilha sonora e efeitos próprios</li><li>Funciona offline e pode ser instalado como app (PWA)</li><li>Grátis e sem cadastro</li></ul>
+  <p>Desenvolvido por Alequizao (alequizao.dev@gmail.com · github.com/alequizao) · <a href="https://alequizao.com/">alequizao.com</a></p>
+</main>
+<noscript><p style="color:#fff;padding:20px;font-family:sans-serif">Surf nos Trilhos precisa de JavaScript ativado para jogar.</p></noscript>
+<!-- ÍCONES (sprite SVG próprio, grade 24x24, preenchidos com recortes). Uso: <svg class="ic"><use href="#i-nome"/></svg> -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">
+<defs>
+  <mask id="mk-ajuda" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M9.3 9.4a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2 1-1.2 1.8v.6" fill="none" stroke="#000" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.45" fill="#000"/></mask>
+  <mask id="mk-alerta" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M12 9.2v4.6" stroke="#000" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="17.2" r="1.45" fill="#000"/></mask>
+  <mask id="mk-cadeado" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><circle cx="12" cy="14.6" r="1.9" fill="#000"/><path d="M12 15.5v2.6" stroke="#000" stroke-width="1.9" stroke-linecap="round"/><path d="M7 12.6h10" stroke="#000" stroke-width=".9" opacity=".35"/></mask>
+  <mask id="mk-moeda" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><circle cx="12" cy="12" r="7" fill="none" stroke="#000" stroke-width="1.3"/><path d="M12 7.6l1.3 2.8 3 .3-2.3 2 .7 3-2.7-1.6-2.7 1.6.7-3-2.3-2 3-.3z" fill="#000" opacity=".55"/></mask>
+  <mask id="mk-trem" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><rect x="7" y="5.6" width="10" height="5.6" rx="1.6" fill="#000"/><circle cx="8.6" cy="14.6" r="1.35" fill="#000"/><circle cx="15.4" cy="14.6" r="1.35" fill="#000"/><path d="M10.6 14.6h2.8" stroke="#000" stroke-width="1.2" stroke-linecap="round"/><path d="M9.5 3.9h5" stroke="#000" stroke-width="1" stroke-linecap="round" opacity=".6"/></mask>
+  <mask id="mk-barreira" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M5 13.4 9 6.6M10.6 13.4l4-6.8M16.2 13.4l4-6.8" stroke="#000" stroke-width="2.3" opacity=".5"/></mask>
+  <mask id="mk-placa" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M12 5.4v5.4M9.2 8.4 12 11l2.8-2.6" fill="none" stroke="#000" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></mask>
+  <mask id="mk-tapume" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M8.4 5.5v12M15.6 5.5v12" stroke="#000" stroke-width="1.2"/><path d="M4 9.6h16" stroke="#000" stroke-width="2.6" opacity=".45"/></mask>
+  <mask id="mk-foguete" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><circle cx="12" cy="9.2" r="2" fill="#000"/><path d="M9 14.2h6" stroke="#000" stroke-width="1" opacity=".45"/></mask>
+  <mask id="mk-tenis" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M9.6 6.6l1.2 1.6M12.4 5.8l1.2 1.6" stroke="#000" stroke-width="1.1" stroke-linecap="round"/></mask>
+  <mask id="mk-ima" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M2 8.2h6.6M15.4 8.2H22" stroke="#000" stroke-width="1.3"/></mask>
+  <mask id="mk-trofeu" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M12 5.4l1 2.1 2.2.2-1.7 1.5.5 2.2-2-1.2-2 1.2.5-2.2-1.7-1.5 2.2-.2z" fill="#000" opacity=".5"/></mask>
+  <mask id="mk-sacola" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><circle cx="9" cy="11" r="1.1" fill="#000"/><circle cx="15" cy="11" r="1.1" fill="#000"/><path d="M9 11.6a3 3 0 0 0 6 0" fill="none" stroke="#000" stroke-width="1.5" stroke-linecap="round"/></mask>
+  <mask id="mk-susto" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><circle cx="8.8" cy="9.6" r="1.5" fill="#000"/><circle cx="15.2" cy="9.6" r="1.5" fill="#000"/><rect x="7" y="13.4" width="10" height="4.2" rx="1.6" fill="#000"/></mask>
+  <mask id="mk-bandeira" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><g fill="#000" opacity=".55"><rect x="7.4" y="4.6" width="2.9" height="2.9"/><rect x="13.2" y="4.6" width="2.9" height="2.9"/><rect x="10.3" y="7.5" width="2.9" height="2.9"/><rect x="16.1" y="7.5" width="2.9" height="2.9"/><rect x="7.4" y="10.4" width="2.9" height="2.9"/><rect x="13.2" y="10.4" width="2.9" height="2.9"/></g></mask>
+</defs>
+
+<symbol id="i-pausa" viewBox="0 0 24 24"><rect x="5.6" y="4.2" width="4.8" height="15.6" rx="1.8" fill="currentColor"/><rect x="13.6" y="4.2" width="4.8" height="15.6" rx="1.8" fill="currentColor"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M7.6 5.3v13.4c0 1.1 1.2 1.7 2.1 1.1l10-6.7a1.3 1.3 0 0 0 0-2.2l-10-6.7c-.9-.6-2.1 0-2.1 1.1z" fill="currentColor"/></symbol>
+<symbol id="i-casa" viewBox="0 0 24 24"><path d="M11.2 3.4a1.3 1.3 0 0 1 1.6 0l8.1 6.7c.7.6.3 1.7-.6 1.7H19v7.7a1.5 1.5 0 0 1-1.5 1.5h-3.3v-5.2a1.2 1.2 0 0 0-1.2-1.2h-2a1.2 1.2 0 0 0-1.2 1.2V21H6.5A1.5 1.5 0 0 1 5 19.5v-7.7H3.7c-.9 0-1.3-1.1-.6-1.7z" fill="currentColor"/></symbol>
+<symbol id="i-reiniciar" viewBox="0 0 24 24"><path d="M18.9 13.2A7 7 0 1 1 16.6 6.8" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><path d="M20.2 3.6a.8.8 0 0 0-1.3-.4l-5.2 4.5a.8.8 0 0 0 .4 1.4l5.6.8a.8.8 0 0 0 .9-.9z" fill="currentColor"/></symbol>
+<symbol id="i-sacola" viewBox="0 0 24 24"><path d="M8.3 8.6V7.3a3.7 3.7 0 0 1 7.4 0v1.3" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M5.4 7.6h13.2c.7 0 1.2.5 1.3 1.2l.9 10.6a2 2 0 0 1-2 2.2H5.2a2 2 0 0 1-2-2.2l.9-10.6c.1-.7.6-1.2 1.3-1.2z" fill="currentColor" mask="url(#mk-sacola)"/></symbol>
+<symbol id="i-alvo" viewBox="0 0 24 24"><circle cx="11" cy="13" r="8.2" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="11" cy="13" r="4.1" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="11" cy="13" r="1.3" fill="currentColor"/><path d="M11 13 20 4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M17.6 3.3 17.4 6.6l3.3-.2 1.6-1.6-2.5-.2-.2-2.5z" fill="currentColor" stroke="currentColor" stroke-width=".8" stroke-linejoin="round"/></symbol>
+<symbol id="i-som" viewBox="0 0 24 24"><path d="M3.8 9.1h3l4.6-4a1 1 0 0 1 1.6.8v14.2a1 1 0 0 1-1.6.8l-4.6-4h-3a1 1 0 0 1-1-1V10.1a1 1 0 0 1 1-1z" fill="currentColor"/><path d="M16 9.1a4.2 4.2 0 0 1 0 5.8M18.7 6.4a8 8 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+<symbol id="i-som-off" viewBox="0 0 24 24"><path d="M3.8 9.1h3l4.6-4a1 1 0 0 1 1.6.8v14.2a1 1 0 0 1-1.6.8l-4.6-4h-3a1 1 0 0 1-1-1V10.1a1 1 0 0 1 1-1z" fill="currentColor"/><path d="M16.3 9.4l5 5.2M21.3 9.4l-5 5.2" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+<symbol id="i-musica" viewBox="0 0 24 24"><path d="M9.3 17.4V6.3c0-.6.4-1.1 1-1.2l8.3-1.9c.7-.2 1.4.4 1.4 1.1v10.9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M9.3 6.3l10.7-2.4v3.3L9.3 9.6z" fill="currentColor"/><ellipse cx="6.6" cy="17.6" rx="3.1" ry="2.6" fill="currentColor"/><ellipse cx="17.3" cy="15.4" rx="3.1" ry="2.6" fill="currentColor"/></symbol>
+<symbol id="i-musica-off" viewBox="0 0 24 24"><g opacity=".85"><path d="M9.3 17.4V6.3c0-.6.4-1.1 1-1.2l8.3-1.9c.7-.2 1.4.4 1.4 1.1v10.9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="6.6" cy="17.6" rx="3.1" ry="2.6" fill="currentColor"/><ellipse cx="17.3" cy="15.4" rx="3.1" ry="2.6" fill="currentColor"/></g><path d="M3.5 3.5l17 17" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+<symbol id="i-ajuda" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="currentColor" mask="url(#mk-ajuda)"/></symbol>
+<symbol id="i-trofeu" viewBox="0 0 24 24"><path d="M7.2 5.2H4.6a.8.8 0 0 0-.8.9c.2 2.7 1.6 4.6 4 5.1M16.8 5.2h2.6c.5 0 .9.4.8.9-.2 2.7-1.6 4.6-4 5.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.8 3h10.4c.4 0 .8.4.8.8v4.6a6 6 0 0 1-12 0V3.8c0-.4.4-.8.8-.8z" fill="currentColor" mask="url(#mk-trofeu)"/><path d="M10.7 14.2h2.6l.4 3.3h-3.4z" fill="currentColor"/><rect x="7" y="17.6" width="10" height="3.6" rx="1.3" fill="currentColor"/></symbol>
+<symbol id="i-prancha" viewBox="0 0 24 24"><path d="M2.6 7.8c.5 2.3 2 3.6 4.2 3.6h10.4c2.2 0 3.7-1.3 4.2-3.6" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.4 11.8h3.2l-.6 2.2H7zM14.4 11.8h3.2l-.6 2.2H15z" fill="currentColor"/><circle cx="8" cy="17" r="2.9" fill="currentColor"/><circle cx="16" cy="17" r="2.9" fill="currentColor"/></symbol>
+<symbol id="i-moeda" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="currentColor" mask="url(#mk-moeda)"/></symbol>
+<symbol id="i-ima" viewBox="0 0 24 24"><path d="M3.4 3.6h5.2v7.6a3.4 3.4 0 0 0 6.8 0V3.6h5.2v7.8a8.6 8.6 0 0 1-17.2 0z" fill="currentColor" mask="url(#mk-ima)"/><path d="M1.6 17.6l1.8-.6M22.4 17.6l-1.8-.6M12 22.6v-1.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".55"/></symbol>
+<symbol id="i-foguete" viewBox="0 0 24 24"><path d="M12 1.8c3 2.1 4.6 5.4 4.6 9.3v4.7H7.4v-4.7c0-3.9 1.6-7.2 4.6-9.3z" fill="currentColor" mask="url(#mk-foguete)"/><path d="M7.4 11.4 4.3 14.6v3.6l3.1-1.6zM16.6 11.4l3.1 3.2v3.6l-3.1-1.6z" fill="currentColor"/><path d="M9.6 17.4h4.8L12 22.6z" fill="currentColor" opacity=".7"/></symbol>
+<symbol id="i-tenis" viewBox="0 0 24 24"><path d="M3.4 2.8h3.9c.4 0 .7.2.9.5l1.2 2.1 3.4-1.2c.4-.1.8 0 1.1.3l1.6 1.9c3.4.5 6.5 1.6 7 4v1.5H2.6V3.6c0-.4.4-.8.8-.8z" fill="currentColor" mask="url(#mk-tenis)"/><rect x="2.3" y="12.4" width="19.6" height="2.6" rx="1.3" fill="currentColor"/><path d="M12 15.2c-3 0-3 1.4 0 1.4s3 1.4 0 1.4-3 1.4 0 1.4 3 1.4 0 1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8.4 22.2h7.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+<symbol id="i-dobro" viewBox="0 0 24 24"><path d="M3.3 8.6a3.7 3.7 0 0 1 7.2 1.1c0 3-4.1 4.8-6.4 8.5h6.8" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.2 10.6l6 7.6M20.2 10.6l-6 7.6" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/></symbol>
+<symbol id="i-alerta" viewBox="0 0 24 24"><path d="M10.3 3.9a2 2 0 0 1 3.4 0l8 13.9a2 2 0 0 1-1.7 3H4a2 2 0 0 1-1.7-3z" fill="currentColor" mask="url(#mk-alerta)"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4.6 12.8l4.6 4.6L19.6 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-cadeado" viewBox="0 0 24 24"><path d="M7.6 10.4V8a4.4 4.4 0 0 1 8.8 0v2.4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.6" y="10" width="14.8" height="11.4" rx="2.6" fill="currentColor" mask="url(#mk-cadeado)"/></symbol>
+<symbol id="i-estrela" viewBox="0 0 24 24"><path d="M12 3.2 14.53 9.32 21.13 9.83 16.09 14.13 17.64 20.57 12 17.1 6.36 20.57 7.91 14.13 2.87 9.83 9.47 9.32Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+<symbol id="i-seta-cima" viewBox="0 0 24 24"><path d="M12 3.4 19.4 11h-4.3v8.6H8.9V11H4.6z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-seta-baixo" viewBox="0 0 24 24"><path d="M12 20.6 19.4 13h-4.3V4.4H8.9V13H4.6z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-seta-esq" viewBox="0 0 24 24"><path d="M3.4 12 11 4.6v4.3h8.6v6.2H11v4.3z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-seta-dir" viewBox="0 0 24 24"><path d="M20.6 12 13 4.6v4.3H4.4v6.2H13v4.3z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-toque-duplo" viewBox="0 0 24 24"><path d="M6.9 9.4a4.6 4.6 0 0 1 9.2 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".6"/><path d="M4 9.4a7.5 7.5 0 0 1 15 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" opacity=".35"/><path d="M10 22.4l-3.9-4.3a1.7 1.7 0 0 1 2.4-2.4l1.5 1.3V9.8a1.5 1.5 0 0 1 3 0v4.4l4.3.8a2 2 0 0 1 1.6 2.3l-.8 5.1z" fill="currentColor"/></symbol>
+<symbol id="i-trem" viewBox="0 0 24 24"><path d="M8.4 2.4h7.2c2.3 0 4.2 1.9 4.2 4.2v10c0 1.2-.9 2.1-2.1 2.1H6.3c-1.2 0-2.1-.9-2.1-2.1v-10c0-2.3 1.9-4.2 4.2-4.2z" fill="currentColor" mask="url(#mk-trem)"/><path d="M7.6 19.6l-2 2.6M16.4 19.6l2 2.6M6.3 21.6h11.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+<symbol id="i-barreira" viewBox="0 0 24 24"><rect x="2.4" y="6.2" width="19.2" height="7.6" rx="1.8" fill="currentColor" mask="url(#mk-barreira)"/><path d="M6 13.8v6.6M18 13.8v6.6M3.8 20.6h4.4M15.8 20.6h4.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="6" cy="4.2" r="1.5" fill="currentColor" opacity=".7"/><circle cx="18" cy="4.2" r="1.5" fill="currentColor" opacity=".7"/></symbol>
+<symbol id="i-placa" viewBox="0 0 24 24"><path d="M5.5 12.6v8.6M18.5 12.6v8.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="2.6" y="3.2" width="18.8" height="9.8" rx="2" fill="currentColor" mask="url(#mk-placa)"/><path d="M7 16.6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="1.6 2.2" opacity=".6"/></symbol>
+<symbol id="i-tapume" viewBox="0 0 24 24"><rect x="2.6" y="4.4" width="18.8" height="13.4" rx="1.8" fill="currentColor" mask="url(#mk-tapume)"/><path d="M5.4 17.8v3.4M18.6 17.8v3.4M3.6 21.4h3.6M16.8 21.4h3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-raio" viewBox="0 0 24 24"><path d="M13.8 2.6 5.2 13.4h6.2l-1.6 8 8.6-11h-6.2z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+<symbol id="i-impacto" viewBox="0 0 24 24"><path d="M12 1.5 13.78 7.11 18.75 3.96 16.5 9.4 22.34 10.18 17.12 12.9 21.09 17.25 15.34 15.98 15.59 21.87 12 17.2 8.41 21.87 8.66 15.98 2.91 17.25 6.88 12.9 1.66 10.18 7.5 9.4 5.25 3.96 10.22 7.11Z" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></symbol>
+<symbol id="i-susto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.6" fill="currentColor" mask="url(#mk-susto)"/></symbol>
+<symbol id="i-bandeira" viewBox="0 0 24 24"><path d="M5.6 21.6V3.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M7.4 4.6h11.6c.6 0 .9.6.6 1.1L17.4 9.4l2.2 3.7c.3.5 0 1.1-.6 1.1H7.4z" fill="currentColor" mask="url(#mk-bandeira)"/></symbol>
+<symbol id="i-fechar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+</svg>
+
+<canvas id="cena"></canvas>
+
+<!-- HUD -->
+<div id="hud" class="oculto">
+  <div class="hud-esq">
+    <button id="bt-pausa" class="bt-redondo" aria-label="Pausar"><svg class="ic" aria-hidden="true"><use href="#i-pausa"/></svg></button>
+    <div id="hud-mult" class="selo">x1</div>
+  </div>
+  <div class="hud-dir">
+    <div id="hud-pontos">0</div>
+    <div id="hud-moedas"><span class="moeda-ic"></span><b>0</b></div>
+    <div id="hud-dist">0 m</div>
+  </div>
+  <div id="hud-poderes"></div>
+  <button id="bt-prancha" class="bt-prancha" aria-label="Usar prancha"><svg class="ic" aria-hidden="true"><use href="#i-prancha"/></svg><b>0</b></button>
+  <div id="aviso-pers" class="oculto"><svg class="ic" aria-hidden="true"><use href="#i-alerta"/></svg> O vigia está colado em você!</div>
+</div>
+
+<div id="toast"></div>
+
+<!-- MENU -->
+<section id="tela-menu" class="tela">
+  <div class="topo-menu">
+    <div class="chip"><span class="moeda-ic"></span><b id="m-moedas">0</b></div>
+    <div class="chip"><span class="chip-ic ci-azul"><svg class="ic" aria-hidden="true"><use href="#i-prancha"/></svg></span><b id="m-pranchas">0</b></div>
+    <div class="chip"><span class="chip-ic ci-ouro"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg></span><b id="m-recorde">0</b></div>
+  </div>
+  <div class="logo" aria-label="Surf nos Trilhos">
+    <div class="logo-l1" data-t="SURF">SURF</div>
+    <div class="logo-l2"><span>nos Trilhos</span></div>
+  </div>
+  <div class="menu-baixo">
+    <button id="bt-jogar" class="bt bt-grande"><svg class="ic ic-jogar" aria-hidden="true"><use href="#i-play"/></svg>JOGAR</button>
+    <div class="linha-bts">
+      <button id="bt-loja" class="bt bt-azul"><svg class="ic" aria-hidden="true"><use href="#i-sacola"/></svg> Loja</button>
+      <button id="bt-missoes" class="bt bt-roxo"><svg class="ic" aria-hidden="true"><use href="#i-alvo"/></svg> Missões <span id="m-mult" class="mini-selo">x1</span></button>
+    </div>
+    <div class="linha-bts">
+      <button id="bt-som" class="bt bt-mini"><svg class="ic ic-on" aria-hidden="true"><use href="#i-som"/></svg><svg class="ic ic-off" aria-hidden="true"><use href="#i-som-off"/></svg> Som</button>
+      <button id="bt-musica" class="bt bt-mini"><svg class="ic ic-on" aria-hidden="true"><use href="#i-musica"/></svg><svg class="ic ic-off" aria-hidden="true"><use href="#i-musica-off"/></svg> Música</button>
+      <button id="bt-ajuda" class="bt bt-mini"><svg class="ic" aria-hidden="true"><use href="#i-ajuda"/></svg> Como jogar</button>
+    </div>
+  </div>
+</section>
+
+<!-- COMO JOGAR -->
+<section id="tela-ajuda" class="tela tela-painel oculto">
+  <div class="painel">
+    <h2><span class="h-ic hi-laranja"><svg class="ic" aria-hidden="true"><use href="#i-ajuda"/></svg></span>Como jogar</h2>
+    <ul class="ajuda">
+      <li><span class="aj-ic aj-azul"><svg class="ic" aria-hidden="true"><use href="#i-seta-esq"/></svg><svg class="ic" aria-hidden="true"><use href="#i-seta-dir"/></svg></span><span>Arraste para os lados (ou setas / A D) para trocar de trilho.</span></li>
+      <li><span class="aj-ic aj-verde"><svg class="ic" aria-hidden="true"><use href="#i-seta-cima"/></svg></span><span>Arraste para cima (↑ / W / Espaço) para <b>pular</b> a barreira listrada vermelha e branca.</span></li>
+      <li><span class="aj-ic aj-amarelo"><svg class="ic" aria-hidden="true"><use href="#i-seta-baixo"/></svg></span><span>Arraste para baixo (↓ / S) para <b>rolar</b> por baixo da placa amarela <b>ABAIXE!</b>. No ar, desce rápido.</span></li>
+      <li><span class="aj-ic aj-ciano"><svg class="ic" aria-hidden="true"><use href="#i-toque-duplo"/></svg></span><span>Toque duas vezes (ou B) para usar a <b>prancha</b>: ela aguenta uma batida.</span></li>
+      <li><span class="aj-ic aj-oliva"><svg class="ic" aria-hidden="true"><use href="#i-tapume"/></svg></span><span>O tapume verde <b>OBRA</b> e a frente dos trens não dá pra pular: troque de trilho.</span></li>
+      <li><span class="aj-ic aj-roxo"><svg class="ic" aria-hidden="true"><use href="#i-trem"/></svg></span><span>Suba nas rampas para correr em cima dos trens. Trem com farol aceso vem na sua direção!</span></li>
+      <li><span class="aj-ic aj-vermelho"><svg class="ic" aria-hidden="true"><use href="#i-susto"/></svg></span><span>Esbarrou de lado? Você tropeça e o vigia chega perto. Tropeçou de novo logo em seguida, ele te pega.</span></li>
+      <li><span class="aj-ic aj-laranja"><svg class="ic" aria-hidden="true"><use href="#i-raio"/></svg></span><span>Poderes: <span class="pw pw-ima"><svg class="ic" aria-hidden="true"><use href="#i-ima"/></svg>Ímã</span> puxa moedas, <span class="pw pw-jato"><svg class="ic" aria-hidden="true"><use href="#i-foguete"/></svg>Jato</span> voa por cima de tudo, <span class="pw pw-tenis"><svg class="ic" aria-hidden="true"><use href="#i-tenis"/></svg>Tênis</span> pula alto, <span class="pw pw-dobro"><svg class="ic" aria-hidden="true"><use href="#i-dobro"/></svg></span> dobra os pontos.</span></li>
+      <li><span class="aj-ic aj-roxo"><svg class="ic" aria-hidden="true"><use href="#i-alvo"/></svg></span><span>Cumpra as 3 missões para aumentar o multiplicador de pontos de vez.</span></li>
+    </ul>
+    <p class="credito">Desenvolvido por <b>Alequizao</b> · <a href="mailto:alequizao.dev@gmail.com">alequizao.dev@gmail.com</a> · <a href="https://github.com/alequizao" target="_blank" rel="noopener">github.com/alequizao</a></p>
+    <button class="bt bt-grande bt-voltar"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Entendi</button>
+  </div>
+</section>
+
+<!-- LOJA -->
+<section id="tela-loja" class="tela tela-painel oculto">
+  <div class="painel">
+    <div class="painel-topo">
+      <h2><span class="h-ic hi-azul"><svg class="ic" aria-hidden="true"><use href="#i-sacola"/></svg></span>Loja</h2>
+      <div class="chip"><span class="moeda-ic"></span><b id="l-moedas">0</b></div>
+    </div>
+    <div class="abas">
+      <button class="aba ativa" data-aba="poderes"><svg class="ic" aria-hidden="true"><use href="#i-raio"/></svg>Poderes</button>
+      <button class="aba" data-aba="pranchas"><svg class="ic" aria-hidden="true"><use href="#i-prancha"/></svg>Pranchas</button>
+      <button class="aba" data-aba="skins"><svg class="ic" aria-hidden="true"><use href="#i-estrela"/></svg>Personagens</button>
+    </div>
+    <div id="loja-conteudo" class="loja-lista"></div>
+    <button class="bt bt-grande bt-voltar">Voltar</button>
+  </div>
+</section>
+
+<!-- MISSÕES -->
+<section id="tela-missoes" class="tela tela-painel oculto">
+  <div class="painel">
+    <div class="painel-topo">
+      <h2><span class="h-ic hi-roxo"><svg class="ic" aria-hidden="true"><use href="#i-alvo"/></svg></span>Missões</h2>
+      <div class="chip">Multiplicador <b id="mi-mult">x1</b></div>
+    </div>
+    <p class="sub">Complete as três para subir o multiplicador e ganhar moedas.</p>
+    <div id="lista-missoes"></div>
+    <button class="bt bt-grande bt-voltar">Voltar</button>
+  </div>
+</section>
+
+<!-- PAUSA -->
+<section id="tela-pausa" class="tela tela-painel oculto">
+  <div class="painel painel-peq">
+    <h2><span class="h-ic hi-azul"><svg class="ic" aria-hidden="true"><use href="#i-pausa"/></svg></span>Pausado</h2>
+    <div id="pausa-missoes"></div>
+    <button id="bt-continuar-pausa" class="bt bt-grande"><svg class="ic ic-jogar" aria-hidden="true"><use href="#i-play"/></svg>Continuar</button>
+    <button id="bt-sair" class="bt bt-azul"><svg class="ic" aria-hidden="true"><use href="#i-casa"/></svg> Sair para o menu</button>
+  </div>
+</section>
+
+<!-- FIM -->
+<section id="tela-fim" class="tela tela-painel oculto">
+  <div class="painel painel-peq">
+    <h2 id="fim-titulo">Pego!</h2>
+    <div id="fim-recorde" class="novo-recorde oculto"><svg class="ic" aria-hidden="true"><use href="#i-estrela"/></svg> NOVO RECORDE!</div>
+    <div class="fim-pontos" id="fim-pontos">0</div>
+    <div class="fim-linha">
+      <div><span class="moeda-ic"></span><small>Moedas</small><b id="fim-moedas">0</b></div>
+      <div><span class="fl-ic fl-azul"><svg class="ic" aria-hidden="true"><use href="#i-bandeira"/></svg></span><small>Distância</small><b id="fim-dist">0 m</b></div>
+      <div><span class="fl-ic fl-ouro"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg></span><small>Recorde</small><b id="fim-melhor">0</b></div>
+    </div>
+    <button id="bt-reviver" class="bt bt-verde"><svg class="ic" aria-hidden="true"><use href="#i-reiniciar"/></svg> Continuar correndo · <span class="moeda-ic"></span><b id="custo-reviver">400</b></button>
+    <button id="bt-denovo" class="bt bt-grande"><svg class="ic ic-jogar" aria-hidden="true"><use href="#i-reiniciar"/></svg>Jogar de novo</button>
+    <button id="bt-menu" class="bt bt-azul"><svg class="ic" aria-hidden="true"><use href="#i-casa"/></svg> Menu</button>
+  </div>
+</section>
+
+<div id="carregando">Carregando…</div>
+
+<script type="importmap">{"imports":{"three":"./lib/three.module.min.js"}}</script>
+<script type="module" src="jogo.js?v=1.1.0"></script>
+<script>
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=1.1.0', { updateViaCache: 'none' }).catch(() => {}));
+</script>
+</body>
+</html>

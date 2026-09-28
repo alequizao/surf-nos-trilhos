@@ -1,0 +1,11 @@
+# Surf nos Trilhos
+
+> Jogo de corrida infinita (endless runner) 3D grátis, no estilo Subway Surfers, que roda no navegador do celular ou do PC, sem instalar e sem cadastro. Endereço: https://alequizao.com/surf/
+
+- Jogabilidade: 3 trilhos; deslizar para os lados troca de trilho, para cima pula, para baixo rola; toque duplo usa a prancha (aguenta uma batida).
+- Obstáculos: trens parados, trens na contramão (farol aceso), barreiras listradas (pular), placas ABAIXE! (rolar), tapumes de obra (desviar), rampas para correr em cima dos trens.
+- Poderes: ímã de moedas, jetpack, tênis mola, pontos 2x. Loja de personagens (Léo, Duda, Bento, Nina Neon), pranchas e melhorias; missões com multiplicador.
+- Cenário inspirado em Maceió (AL): prédios, coqueiros, muros grafitados, trens com letreiro para Maceió, Jaraguá, Bebedouro, Rio Largo, Fernão Velho e Satuba.
+- Tecnologia: Three.js (WebGL), áudio sintetizado com WebAudio, PWA com funcionamento offline.
+- Preço: grátis. Idioma: português do Brasil.
+- Desenvolvedor: Alequizao — alequizao.dev@gmail.com — https://github.com/alequizao — https://alequizao.com/
