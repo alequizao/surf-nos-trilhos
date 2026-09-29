@@ -6,7 +6,7 @@
 // Adaptado do Trilhos para o cenário de Maceió (coqueiros, muros grafitados, prédios da orla).
 // Geometrias e materiais são criados uma vez e compartilhados por todos os trechos (só liga/desliga visibilidade).
 import * as THREE from 'three';
-import { criaClima } from './clima.js?v=1.1.4';
+import { criaClima } from './clima.js?v=1.1.6';
 
 const CICLO = 1680;                    // a cada 1,68 km: cidade → túnel → cidade → ponte → cidade
 const FAIXAS = { tunel: [640, 880], ponte: [1280, 1520] };

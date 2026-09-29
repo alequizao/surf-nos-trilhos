@@ -778,8 +778,8 @@ export function criaVisualBarreira(tipo) {
 }
 
 // moedas e poderes ficam em itens.js (outro módulo) — reexportados aqui
-import { animaItens } from './itens.js?v=1.1.4';
-export { criaVisualMoeda, criaVisualPoder } from './itens.js?v=1.1.4';
+import { animaItens } from './itens.js?v=1.1.6';
+export { criaVisualMoeda, criaVisualPoder } from './itens.js?v=1.1.6';
 
 // ======================================================================
 // ANIMAÇÃO (materiais compartilhados)

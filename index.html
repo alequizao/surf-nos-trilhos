@@ -32,7 +32,7 @@
 "playMode":"SinglePlayer","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},
 "author":{"@type":"Person","name":"Alequizao","email":"alequizao.dev@gmail.com","url":"https://github.com/alequizao"},
 "publisher":{"@type":"Organization","name":"Alequizão","url":"https://alequizao.com/"},
-"softwareVersion":"1.1.4","datePublished":"2026-09-27","dateModified":"2026-09-29"}
+"softwareVersion":"1.1.6","datePublished":"2026-09-27","dateModified":"2026-09-29"}
 </script>
 <meta name="theme-color" content="#0f1c3f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -44,7 +44,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css?v=1.1.4">
+<link rel="stylesheet" href="estilo.css?v=1.1.6">
 </head>
 <body>
 <!-- texto para buscadores, IAs e leitores de tela (o jogo em si é desenhado no canvas) -->
@@ -261,13 +261,13 @@
 <div id="carregando">Carregando…</div>
 
 <script type="importmap">{"imports":{"three":"./lib/three.module.min.js"}}</script>
-<script type="module" src="jogo.js?v=1.1.4"></script>
+<script type="module" src="jogo.js?v=1.1.6"></script>
 <script>
 if ('serviceWorker' in navigator) addEventListener('load', () => {
   // atualização forçada: procura versão nova ao abrir, ao voltar pro app e a cada 30 min;
   // quando o SW novo assume, recarrega sozinho — mas nunca no meio de uma corrida
   const jaTinha = !!navigator.serviceWorker.controller;
-  navigator.serviceWorker.register('sw.js?v=1.1.4', { updateViaCache: 'none' }).then(reg => {
+  navigator.serviceWorker.register('sw.js?v=1.1.6', { updateViaCache: 'none' }).then(reg => {
     const busca = () => reg.update().catch(() => {});
     document.addEventListener('visibilitychange', () => { if (!document.hidden) busca(); });
     setInterval(busca, 30 * 60 * 1000);
