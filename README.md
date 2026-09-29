@@ -1,7 +1,7 @@
 # 🚆 Surf nos Trilhos — jogo de corrida infinita 3D no navegador
 
 [![Jogar agora](https://img.shields.io/badge/▶_Jogar_agora-alequizao.com%2Fsurf-ff7a1a?style=for-the-badge)](https://alequizao.com/surf/)
-![Versão](https://img.shields.io/badge/versão-1.1.0-2f6bff?style=for-the-badge)
+![Versão](https://img.shields.io/badge/versão-1.1.4-2f6bff?style=for-the-badge)
 ![Three.js](https://img.shields.io/badge/Three.js-r170-000?style=for-the-badge&logo=three.js)
 ![PWA](https://img.shields.io/badge/PWA-offline-1fc46b?style=for-the-badge)
 
@@ -49,6 +49,12 @@
 
 ## ✨ Recursos
 
+- 🌦️ **Clima que muda sozinho** — sol, nublado e chuva (gotas, trilho molhado e som), junto com o ciclo dia/noite, túnel e ponte.
+
+  <img src="docs/img/clima-chuva.jpg" alt="Corrida na chuva" width="260">
+
+- 🏆 **Ranking online:** ao perder, salve o placar com o nome ou o @ do Instagram e veja a posição (PHP + SQLite; o banco fica fora do repositório).
+- 🚇 **Túnel do Farol e ponte sobre a Lagoa Mundaú**, pista sempre com saída e continuar ilimitado com moedas.
 - **Cenário 3D realista:** sombras em tempo real, céu com nuvens e reflexos (PBR + environment map), trilhos de aço com brita e dormentes de concreto, muros grafitados, prédios com sacadas e caixas d'água, coqueiros e rede elétrica.
 - **Trens** em 4 pinturas com letreiro LED (Maceió, Jaraguá, Bebedouro, Rio Largo, Fernão Velho, Satuba); trens na contramão com farol aceso.
 - **Obstáculos:** barreira listrada (pular), placa ABAIXE! (rolar), tapume de obra (desviar), rampas para correr em cima dos vagões.

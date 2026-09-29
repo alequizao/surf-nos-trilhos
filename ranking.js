@@ -1,0 +1,109 @@
+/* Surf nos Trilhos · Desenvolvido por Alequizao <alequizao.dev@gmail.com>
+ * https://github.com/alequizao · © 2026 Alequizao. Todos os direitos reservados. */
+// Ranking online (módulo independente). Fala com ./ranking.php (mesma pasta deste arquivo).
+//
+// Uso no jogo.js:
+//   import { iniciaRanking, rankingFim } from './ranking.js?v=...';
+//   iniciaRanking({ mostra, audio });                 // liga o botão #bt-ranking do menu (mostra = troca de tela do jogo)
+//   rankingFim({ pontos, moedas, dist });             // no fim de jogo: prepara o campo "Seu nome ou @"
+// HTML necessário: #bt-ranking (menu), #tela-ranking (#rk-lista, #rk-voce) e, na #tela-fim, #rk-form (#rk-nome, #rk-salvar, #rk-msg).
+
+const API = new URL('ranking.php', import.meta.url).href;
+const CHAVE_NOME = 'alequizao-ranking-nome';   // compartilhado entre os jogos do site (mesma origem)
+const $ = s => document.querySelector(s);
+const fmt = n => Math.floor(n).toLocaleString('pt-BR');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ic = n => `<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+
+let corrida = null, salvo = false, enviando = false;
+
+const lembra = () => { try { return localStorage.getItem(CHAVE_NOME) || ''; } catch { return ''; } };
+const guarda = n => { try { localStorage.setItem(CHAVE_NOME, n); } catch { /* sem storage: tudo bem */ } };
+
+async function chama(opcoes = {}, busca = '') {
+  if (navigator.onLine === false) throw Object.assign(new Error('offline'), { offline: true });
+  const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 9000);
+  try {
+    const r = await fetch(API + busca, { cache: 'no-store', signal: ctl.signal, ...opcoes });
+    let j = null; try { j = await r.json(); } catch { /* resposta não-JSON */ }
+    if (!j) throw new Error('Ranking indisponível no momento.');
+    if (!r.ok || !j.ok) throw new Error(j.erro || 'Ranking indisponível no momento.');
+    return j;
+  } catch (e) {
+    if (e.name === 'AbortError' || e instanceof TypeError) throw Object.assign(new Error('offline'), { offline: true });
+    throw e;
+  } finally { clearTimeout(t); }
+}
+
+// "@usuario" vira link para o Instagram; nome comum vira texto
+function nomeHtml(nome) {
+  if (/^@[A-Za-z0-9._]{1,30}$/.test(nome)) {
+    return `<a href="https://instagram.com/${encodeURIComponent(nome.slice(1))}" target="_blank" rel="noopener nofollow">${esc(nome)}</a>`;
+  }
+  return esc(nome);
+}
+
+function estado(html, cls = '') { $('#rk-lista').innerHTML = `<div class="rk-estado ${cls}">${html}</div>`; }
+
+async function carregaLista() {
+  const voce = $('#rk-voce'); voce.classList.add('oculto');
+  estado('<span class="rk-giro" aria-hidden="true"></span>Carregando ranking…');
+  const meu = lembra();
+  try {
+    const j = await chama({}, meu ? '?nome=' + encodeURIComponent(meu) : '');
+    if (!j.top.length) { estado(ic('trofeu') + '<b>Ninguém no ranking ainda.</b><span>Jogue e seja o primeiro!</span>', 'rk-vazio'); return; }
+    const chaveMeu = j.voce ? j.voce.nome.toLowerCase() : null;
+    $('#rk-lista').innerHTML = j.top.map(r => `<div class="rk-item${r.pos <= 3 ? ' rk-top' + r.pos : ''}${chaveMeu && r.nome.toLowerCase() === chaveMeu ? ' rk-eu' : ''}">
+      <span class="rk-pos">${r.pos}</span>
+      <div class="rk-info"><b class="rk-nome">${nomeHtml(r.nome)}</b><small>${fmt(r.dist)} m · ${fmt(r.moedas)} moedas</small></div>
+      <b class="rk-pts">${fmt(r.pontos)}</b></div>`).join('');
+    if (j.voce) { voce.innerHTML = `${ic('estrela')} Você (${esc(j.voce.nome)}) está em <b>${j.voce.pos}º</b> com ${fmt(j.voce.pontos)} pontos.`; voce.classList.remove('oculto'); }
+  } catch (e) {
+    if (e.offline) estado(ic('alerta') + '<b>Sem internet.</b><span>O ranking aparece quando você estiver online. O jogo continua funcionando.</span>', 'rk-erro');
+    else estado(ic('alerta') + `<b>Não deu pra carregar.</b><span>${esc(e.message)}</span><button class="bt bt-azul rk-tentar" type="button">${ic('reiniciar')} Tentar de novo</button>`, 'rk-erro');
+  }
+}
+
+function msg(texto, tipo = '') { const m = $('#rk-msg'); m.className = 'rk-msg ' + tipo; m.innerHTML = texto; }
+
+async function salvar(e) {
+  e.preventDefault();
+  if (!corrida || salvo || enviando) return;
+  const campo = $('#rk-nome'), bt = $('#rk-salvar');
+  let nome = campo.value.trim().replace(/\s+/g, ' ');
+  if (nome.startsWith('@')) nome = '@' + nome.slice(1).trim();
+  if (nome.startsWith('@') ? !/^@[A-Za-z0-9._]{1,30}$/.test(nome) : (nome.length < 2 || nome.length > 24)) {
+    msg(nome.startsWith('@') ? 'Esse @ não parece um usuário do Instagram.' : 'Digite um nome de 2 a 24 letras.', 'rk-ruim'); campo.focus(); return;
+  }
+  enviando = true; bt.disabled = true; msg('Salvando…');
+  try {
+    const j = await chama({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nome, ...corrida }) });
+    salvo = true; guarda(j.nome); campo.value = j.nome;
+    msg(j.melhorou ? `${ic('trofeu')} Você é o <b>${j.pos}º</b> do ranking!`
+      : `Seu recorde no ranking continua ${fmt(j.pontos)} — você é o <b>${j.pos}º</b>.`, 'rk-bom');
+    bt.innerHTML = `${ic('check')} Salvo`;
+  } catch (err) {
+    bt.disabled = false;
+    msg(err.offline ? 'Sem internet: não deu pra salvar agora.' : esc(err.message), 'rk-ruim');
+  } finally { enviando = false; }
+}
+
+export function rankingFim({ pontos, moedas, dist }) {
+  const form = $('#rk-form'); if (!form) return;
+  corrida = { pontos: Math.floor(pontos), moedas: Math.floor(moedas), dist: Math.floor(dist) };
+  salvo = false;
+  form.classList.toggle('oculto', corrida.pontos < 1 || corrida.dist < 1);
+  const campo = $('#rk-nome'), bt = $('#rk-salvar');
+  if (!campo.value) campo.value = lembra();
+  bt.disabled = false; bt.innerHTML = `${ic('trofeu')} Salvar no ranking`;
+  msg(navigator.onLine === false ? 'Sem internet: o ranking fica para a próxima.' : '');
+}
+
+export function iniciaRanking({ mostra, audio } = {}) {
+  const bt = $('#bt-ranking'); if (!bt) return;
+  bt.addEventListener('click', () => { audio && audio(); mostra('#tela-ranking'); carregaLista(); });
+  $('#rk-lista').addEventListener('click', e => { if (e.target.closest('.rk-tentar')) carregaLista(); });
+  $('#rk-form')?.addEventListener('submit', salvar);
+  // teclas digitadas no campo não viram comandos do jogo
+  $('#rk-nome')?.addEventListener('keydown', e => e.stopPropagation());
+}

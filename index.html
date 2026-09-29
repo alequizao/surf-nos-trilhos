@@ -32,7 +32,7 @@
 "playMode":"SinglePlayer","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},
 "author":{"@type":"Person","name":"Alequizao","email":"alequizao.dev@gmail.com","url":"https://github.com/alequizao"},
 "publisher":{"@type":"Organization","name":"Alequizão","url":"https://alequizao.com/"},
-"softwareVersion":"1.1.0","datePublished":"2026-09-27","dateModified":"2026-09-28"}
+"softwareVersion":"1.1.4","datePublished":"2026-09-27","dateModified":"2026-09-29"}
 </script>
 <meta name="theme-color" content="#0f1c3f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -44,7 +44,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css?v=1.1.0">
+<link rel="stylesheet" href="estilo.css?v=1.1.4">
 </head>
 <body>
 <!-- texto para buscadores, IAs e leitores de tela (o jogo em si é desenhado no canvas) -->
@@ -54,8 +54,8 @@
   <h2>Como jogar</h2>
   <p>Deslize para os lados (ou use as setas / A e D) para trocar de trilho, para cima (↑, W ou Espaço) para pular, para baixo (↓ ou S) para rolar. Toque duas vezes (ou B) para usar a prancha, que aguenta uma batida.</p>
   <h2>Recursos</h2>
-  <ul><li>Poderes: ímã de moedas, jetpack, tênis mola e pontos em dobro</li><li>Loja com personagens (Léo, Duda, Bento e Nina Neon), pranchas e melhorias</li><li>Missões com multiplicador de pontos</li><li>Trilha sonora e efeitos próprios</li><li>Funciona offline e pode ser instalado como app (PWA)</li><li>Grátis e sem cadastro</li></ul>
-  <p>Desenvolvido por Alequizao (alequizao.dev@gmail.com · github.com/alequizao) · <a href="https://alequizao.com/">alequizao.com</a></p>
+  <ul><li>Poderes: ímã de moedas, jetpack, tênis mola e pontos em dobro</li><li>Loja com personagens (Alex, Duda, Bento e Nina Neon), pranchas e melhorias</li><li>Missões com multiplicador de pontos</li><li>Trilha sonora e efeitos próprios</li><li>Funciona offline e pode ser instalado como app (PWA)</li><li>Grátis e sem cadastro</li></ul>
+  <p>Desenvolvido por Alequizao (Instagram @alequizao · alequizao.dev@gmail.com · github.com/alequizao) · <a href="https://alequizao.com/">alequizao.com</a></p>
 </main>
 <noscript><p style="color:#fff;padding:20px;font-family:sans-serif">Surf nos Trilhos precisa de JavaScript ativado para jogar.</p></noscript>
 <!-- ÍCONES (sprite SVG próprio, grade 24x24, preenchidos com recortes). Uso: <svg class="ic"><use href="#i-nome"/></svg> -->
@@ -152,6 +152,7 @@
     <div class="linha-bts">
       <button id="bt-loja" class="bt bt-azul"><svg class="ic" aria-hidden="true"><use href="#i-sacola"/></svg> Loja</button>
       <button id="bt-missoes" class="bt bt-roxo"><svg class="ic" aria-hidden="true"><use href="#i-alvo"/></svg> Missões <span id="m-mult" class="mini-selo">x1</span></button>
+      <button id="bt-ranking" class="bt"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg> Ranking</button>
     </div>
     <div class="linha-bts">
       <button id="bt-som" class="bt bt-mini"><svg class="ic ic-on" aria-hidden="true"><use href="#i-som"/></svg><svg class="ic ic-off" aria-hidden="true"><use href="#i-som-off"/></svg> Som</button>
@@ -176,7 +177,7 @@
       <li><span class="aj-ic aj-laranja"><svg class="ic" aria-hidden="true"><use href="#i-raio"/></svg></span><span>Poderes: <span class="pw pw-ima"><svg class="ic" aria-hidden="true"><use href="#i-ima"/></svg>Ímã</span> puxa moedas, <span class="pw pw-jato"><svg class="ic" aria-hidden="true"><use href="#i-foguete"/></svg>Jato</span> voa por cima de tudo, <span class="pw pw-tenis"><svg class="ic" aria-hidden="true"><use href="#i-tenis"/></svg>Tênis</span> pula alto, <span class="pw pw-dobro"><svg class="ic" aria-hidden="true"><use href="#i-dobro"/></svg></span> dobra os pontos.</span></li>
       <li><span class="aj-ic aj-roxo"><svg class="ic" aria-hidden="true"><use href="#i-alvo"/></svg></span><span>Cumpra as 3 missões para aumentar o multiplicador de pontos de vez.</span></li>
     </ul>
-    <p class="credito">Desenvolvido por <b>Alequizao</b> · <a href="mailto:alequizao.dev@gmail.com">alequizao.dev@gmail.com</a> · <a href="https://github.com/alequizao" target="_blank" rel="noopener">github.com/alequizao</a></p>
+    <p class="credito">Desenvolvido por <b>Alequizao</b> · Instagram <a href="https://instagram.com/alequizao" target="_blank" rel="noopener">@alequizao</a> · <a href="mailto:alequizao.dev@gmail.com">alequizao.dev@gmail.com</a> · <a href="https://github.com/alequizao" target="_blank" rel="noopener">github.com/alequizao</a></p>
     <button class="bt bt-grande bt-voltar"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Entendi</button>
   </div>
 </section>
@@ -232,18 +233,56 @@
       <div><span class="fl-ic fl-azul"><svg class="ic" aria-hidden="true"><use href="#i-bandeira"/></svg></span><small>Distância</small><b id="fim-dist">0 m</b></div>
       <div><span class="fl-ic fl-ouro"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg></span><small>Recorde</small><b id="fim-melhor">0</b></div>
     </div>
+    <form id="rk-form" class="rk-form" autocomplete="off" novalidate>
+      <label for="rk-nome">Seu nome ou @ do Instagram</label>
+      <input id="rk-nome" name="nome" type="text" maxlength="31" placeholder="Ex.: Maria ou @maria" enterkeyhint="send" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <button id="rk-salvar" class="bt bt-azul" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg> Salvar no ranking</button>
+      <p id="rk-msg" class="rk-msg" role="status" aria-live="polite"></p>
+    </form>
     <button id="bt-reviver" class="bt bt-verde"><svg class="ic" aria-hidden="true"><use href="#i-reiniciar"/></svg> Continuar correndo · <span class="moeda-ic"></span><b id="custo-reviver">400</b></button>
     <button id="bt-denovo" class="bt bt-grande"><svg class="ic ic-jogar" aria-hidden="true"><use href="#i-reiniciar"/></svg>Jogar de novo</button>
     <button id="bt-menu" class="bt bt-azul"><svg class="ic" aria-hidden="true"><use href="#i-casa"/></svg> Menu</button>
   </div>
 </section>
 
+<!-- RANKING (ranking.js + ranking.php) -->
+<section id="tela-ranking" class="tela tela-painel oculto">
+  <div class="painel">
+    <div class="painel-topo">
+      <h2><span class="h-ic hi-roxo"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg></span>Ranking</h2>
+      <div class="chip">Top 50</div>
+    </div>
+    <p id="rk-voce" class="sub rk-voce oculto"></p>
+    <div id="rk-lista" class="rolagem rk-lista" aria-live="polite"></div>
+    <button class="bt bt-grande bt-voltar">Voltar</button>
+  </div>
+</section>
+
 <div id="carregando">Carregando…</div>
 
 <script type="importmap">{"imports":{"three":"./lib/three.module.min.js"}}</script>
-<script type="module" src="jogo.js?v=1.1.0"></script>
+<script type="module" src="jogo.js?v=1.1.4"></script>
 <script>
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=1.1.0', { updateViaCache: 'none' }).catch(() => {}));
+if ('serviceWorker' in navigator) addEventListener('load', () => {
+  // atualização forçada: procura versão nova ao abrir, ao voltar pro app e a cada 30 min;
+  // quando o SW novo assume, recarrega sozinho — mas nunca no meio de uma corrida
+  const jaTinha = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register('sw.js?v=1.1.4', { updateViaCache: 'none' }).then(reg => {
+    const busca = () => reg.update().catch(() => {});
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) busca(); });
+    setInterval(busca, 30 * 60 * 1000);
+  }).catch(() => {});
+  let recarregando = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!jaTinha || recarregando) return;
+    const tenta = () => {
+      const g = window.__surf, e = g && g.estado;
+      if (e === 'jogando' || e === 'pausado' || e === 'morrendo') return setTimeout(tenta, 3000);
+      recarregando = true; location.reload();
+    };
+    tenta();
+  });
+});
 </script>
 </body>
 </html>
