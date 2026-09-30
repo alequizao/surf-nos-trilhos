@@ -3,9 +3,9 @@
  * https://github.com/alequizao · © 2026 Alequizao. Todos os direitos reservados.
  */
 // Surf nos Trilhos — service worker (offline). Suba VERSAO a cada deploy.
-const VERSAO = 'surf-v1.1.6';
-const ARQUIVOS = ['./', './index.html', './estilo.css?v=1.1.6', './jogo.js?v=1.1.6', './lib/three.module.min.js', './personagens.js?v=1.1.6', './objetos.js?v=1.1.6', './itens.js?v=1.1.6', './icones.js?v=1.1.6', './ranking.js?v=1.1.6', './biomas.js?v=1.1.6', './clima.js?v=1.1.6',
-  './manifest.webmanifest', './icone-192.png?v=3', './icone-512.png?v=3', './icone-maskable.png?v=3', './apple-touch-icon.png?v=3'];
+const VERSAO = 'surf-v1.2.0';
+const ARQUIVOS = ['./', './index.html', './estilo.css?v=1.2.0', './jogo.js?v=1.2.0', './lib/three.module.min.js', './personagens.js?v=1.2.0', './objetos.js?v=1.2.0', './itens.js?v=1.2.0', './icones.js?v=1.2.0', './ranking.js?v=1.2.0', './biomas.js?v=1.2.0', './clima.js?v=1.2.0',
+  './manifest.webmanifest', './icone-192.png?v=4', './icone-512.png?v=4', './icone-maskable.png?v=4', './apple-touch-icon.png?v=4'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSAO).then(c => c.addAll(ARQUIVOS)).then(() => self.skipWaiting()));
 });

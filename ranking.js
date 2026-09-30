@@ -5,20 +5,29 @@
 // Uso no jogo.js:
 //   import { iniciaRanking, rankingFim } from './ranking.js?v=...';
 //   iniciaRanking({ mostra, audio });                 // liga o botão #bt-ranking do menu (mostra = troca de tela do jogo)
-//   rankingFim({ pontos, moedas, dist });             // no fim de jogo: prepara o campo "Seu nome ou @"
-// HTML necessário: #bt-ranking (menu), #tela-ranking (#rk-lista, #rk-voce) e, na #tela-fim, #rk-form (#rk-nome, #rk-salvar, #rk-msg).
+//   rankingInicio();                                  // quando a corrida começa: pede o código da corrida ao servidor
+//   rankingFim({ pontos, moedas, dist, revives });    // no fim de jogo: prepara o campo "Seu nome ou @"
+// HTML necessário: #bt-ranking (menu), #tela-ranking (#rk-lista, #rk-voce, abas .rk-aba[data-periodo]) e, na #tela-fim, #rk-form (#rk-nome, #rk-salvar, #rk-msg).
 
 const API = new URL('ranking.php', import.meta.url).href;
 const CHAVE_NOME = 'alequizao-ranking-nome';   // compartilhado entre os jogos do site (mesma origem)
+const CHAVE_DONO = 'alequizao-ranking-dono';   // segredo do aparelho: quem salvou um nome primeiro é o dono dele
 const $ = s => document.querySelector(s);
 const fmt = n => Math.floor(n).toLocaleString('pt-BR');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const ic = n => `<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
-let corrida = null, salvo = false, enviando = false;
+let corrida = null, salvo = false, enviando = false, codigo = null, periodo = 'semana';
 
 const lembra = () => { try { return localStorage.getItem(CHAVE_NOME) || ''; } catch { return ''; } };
 const guarda = n => { try { localStorage.setItem(CHAVE_NOME, n); } catch { /* sem storage: tudo bem */ } };
+function dono() {
+  try {
+    let d = localStorage.getItem(CHAVE_DONO);
+    if (!/^[0-9a-f]{32,64}$/.test(d || '')) { d = [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2, '0')).join(''); localStorage.setItem(CHAVE_DONO, d); }
+    return d;
+  } catch { return undefined; }
+}
 
 async function chama(opcoes = {}, busca = '') {
   if (navigator.onLine === false) throw Object.assign(new Error('offline'), { offline: true });
@@ -50,14 +59,17 @@ async function carregaLista() {
   estado('<span class="rk-giro" aria-hidden="true"></span>Carregando ranking…');
   const meu = lembra();
   try {
-    const j = await chama({}, meu ? '?nome=' + encodeURIComponent(meu) : '');
-    if (!j.top.length) { estado(ic('trofeu') + '<b>Ninguém no ranking ainda.</b><span>Jogue e seja o primeiro!</span>', 'rk-vazio'); return; }
+    const j = await chama({}, '?periodo=' + periodo + (meu ? '&nome=' + encodeURIComponent(meu) : ''));
+    if (!j.top.length) {
+      estado(ic('trofeu') + (periodo === 'semana' ? '<b>Ninguém pontuou nesta semana.</b><span>O ranking da semana zera toda segunda. Jogue e fique em 1º!</span>' : '<b>Ninguém no ranking ainda.</b><span>Jogue e seja o primeiro!</span>'), 'rk-vazio');
+      return;
+    }
     const chaveMeu = j.voce ? j.voce.nome.toLowerCase() : null;
     $('#rk-lista').innerHTML = j.top.map(r => `<div class="rk-item${r.pos <= 3 ? ' rk-top' + r.pos : ''}${chaveMeu && r.nome.toLowerCase() === chaveMeu ? ' rk-eu' : ''}">
       <span class="rk-pos">${r.pos}</span>
-      <div class="rk-info"><b class="rk-nome">${nomeHtml(r.nome)}</b><small>${fmt(r.dist)} m · ${fmt(r.moedas)} moedas</small></div>
+      <div class="rk-info"><b class="rk-nome">${nomeHtml(r.nome)}</b><small>${fmt(r.dist)} m · ${fmt(r.moedas)} moedas${r.revives == null ? '' : ` · <span class="rk-rev${r.revives ? '' : ' rk-rev0'}" title="Vezes que usou continuar correndo">${ic('reiniciar')}${r.revives ? r.revives + '× reviver' : 'sem reviver'}</span>`}</small></div>
       <b class="rk-pts">${fmt(r.pontos)}</b></div>`).join('');
-    if (j.voce) { voce.innerHTML = `${ic('estrela')} Você (${esc(j.voce.nome)}) está em <b>${j.voce.pos}º</b> com ${fmt(j.voce.pontos)} pontos.`; voce.classList.remove('oculto'); }
+    if (j.voce) { voce.innerHTML = `${ic('estrela')} Você (${esc(j.voce.nome)}) está em <b>${j.voce.pos}º</b>${periodo === 'semana' ? ' nesta semana' : ''} com ${fmt(j.voce.pontos)} pontos.`; voce.classList.remove('oculto'); }
   } catch (e) {
     if (e.offline) estado(ic('alerta') + '<b>Sem internet.</b><span>O ranking aparece quando você estiver online. O jogo continua funcionando.</span>', 'rk-erro');
     else estado(ic('alerta') + `<b>Não deu pra carregar.</b><span>${esc(e.message)}</span><button class="bt bt-azul rk-tentar" type="button">${ic('reiniciar')} Tentar de novo</button>`, 'rk-erro');
@@ -77,10 +89,11 @@ async function salvar(e) {
   }
   enviando = true; bt.disabled = true; msg('Salvando…');
   try {
-    const j = await chama({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nome, ...corrida }) });
+    const j = await chama({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nome, ...corrida, corrida: codigo || undefined, dono: dono() }) });
     salvo = true; guarda(j.nome); campo.value = j.nome;
-    msg(j.melhorou ? `${ic('trofeu')} Você é o <b>${j.pos}º</b> do ranking!`
-      : `Seu recorde no ranking continua ${fmt(j.pontos)} — você é o <b>${j.pos}º</b>.`, 'rk-bom');
+    const sem = j.semana ? ` · <b>${j.semana.pos}º</b> da semana` : '';
+    msg(j.melhorou ? `${ic('trofeu')} Você é o <b>${j.pos}º</b> do ranking${sem}!`
+      : `Seu recorde continua ${fmt(j.pontos)}: <b>${j.pos}º</b> no geral${sem}.`, 'rk-bom');
     bt.innerHTML = `${ic('check')} Salvo`;
   } catch (err) {
     bt.disabled = false;
@@ -88,9 +101,16 @@ async function salvar(e) {
   } finally { enviando = false; }
 }
 
-export function rankingFim({ pontos, moedas, dist }) {
+async function pedeCodigo() {
+  try { codigo = (await chama({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ acao: 'corrida' }) })).corrida; }
+  catch { codigo = null; }
+}
+// nova corrida (não chamar ao "continuar correndo": a corrida é a mesma)
+export function rankingInicio() { codigo = null; pedeCodigo(); }
+
+export function rankingFim({ pontos, moedas, dist, revives = 0 }) {
   const form = $('#rk-form'); if (!form) return;
-  corrida = { pontos: Math.floor(pontos), moedas: Math.floor(moedas), dist: Math.floor(dist) };
+  corrida = { pontos: Math.floor(pontos), moedas: Math.floor(moedas), dist: Math.floor(dist), revives: Math.floor(revives) };
   salvo = false;
   form.classList.toggle('oculto', corrida.pontos < 1 || corrida.dist < 1);
   const campo = $('#rk-nome'), bt = $('#rk-salvar');
@@ -101,6 +121,10 @@ export function rankingFim({ pontos, moedas, dist }) {
 
 export function iniciaRanking({ mostra, audio } = {}) {
   const bt = $('#bt-ranking'); if (!bt) return;
+  const abas = document.querySelectorAll('.rk-aba');
+  const marcaAba = () => abas.forEach(a => { const on = a.dataset.periodo === periodo; a.classList.toggle('ativa', on); a.setAttribute('aria-selected', on); });
+  abas.forEach(a => a.addEventListener('click', () => { periodo = a.dataset.periodo; marcaAba(); carregaLista(); }));
+  marcaAba();
   bt.addEventListener('click', () => { audio && audio(); mostra('#tela-ranking'); carregaLista(); });
   $('#rk-lista').addEventListener('click', e => { if (e.target.closest('.rk-tentar')) carregaLista(); });
   $('#rk-form')?.addEventListener('submit', salvar);

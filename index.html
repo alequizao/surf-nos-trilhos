@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Surf nos Trilhos — jogo de corrida 3D grátis no navegador | Alequizão</title>
 <meta name="description" content="Surf nos Trilhos: jogo de corrida infinita 3D grátis, estilo Subway Surfers, direto no navegador do celular ou PC. Corra pelos trilhos de Maceió, desvie dos trens, pegue moedas, use jetpack e fuja do vigia. Sem instalar, funciona offline.">
 <meta name="keywords" content="jogo de corrida, corrida infinita, endless runner, jogo tipo subway surfers, jogo grátis online, jogo 3D navegador, jogo de celular sem instalar, surf nos trilhos, jogo de trem, Maceió, Alequizão">
@@ -32,7 +32,7 @@
 "playMode":"SinglePlayer","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},
 "author":{"@type":"Person","name":"Alequizao","email":"alequizao.dev@gmail.com","url":"https://github.com/alequizao"},
 "publisher":{"@type":"Organization","name":"Alequizão","url":"https://alequizao.com/"},
-"softwareVersion":"1.1.6","datePublished":"2026-09-27","dateModified":"2026-09-29"}
+"softwareVersion":"1.2.0","datePublished":"2026-09-27","dateModified":"2026-09-30"}
 </script>
 <meta name="theme-color" content="#0f1c3f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -40,11 +40,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='c' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%231b2a6e'/%3E%3Cstop offset='.55' stop-color='%23b0407a'/%3E%3Cstop offset='1' stop-color='%23ffb347'/%3E%3C/linearGradient%3E%3CradialGradient id='m' cx='.35' cy='.3' r='.8'%3E%3Cstop offset='0' stop-color='%23fffbe3'/%3E%3Cstop offset='.45' stop-color='%23ffd23f'/%3E%3Cstop offset='1' stop-color='%23d98a00'/%3E%3C/radialGradient%3E%3CclipPath id='k'%3E%3Crect width='64' height='64' rx='14'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23k)'%3E%3Crect width='64' height='30' fill='url(%23c)'/%3E%3Ccircle cx='32' cy='25' r='11' fill='%23ffe27a'/%3E%3Crect y='30' width='64' height='34' fill='%234a3a40'/%3E%3Cpath d='M22 38h20M18 45h28M13 54h38' stroke='%238a5a3a' stroke-width='3.5'/%3E%3Cpath d='M30 30L14 66M34 30L50 66' stroke='%23e6e9f2' stroke-width='3.5'/%3E%3Crect x='23' y='17' width='18' height='16' rx='4' fill='%23e8ecf4' stroke='%230b1433' stroke-width='1.5'/%3E%3Crect x='25.5' y='19.5' width='13' height='6' rx='1.5' fill='%236a3f86'/%3E%3Crect x='23.5' y='27' width='17' height='2.2' fill='%232f6bff'/%3E%3Ccircle cx='46' cy='47' r='11' fill='%23b86d00'/%3E%3Ccircle cx='45' cy='46' r='10' fill='url(%23m)' stroke='%23a45f00' stroke-width='1.5'/%3E%3Cpath d='M45 40.5l1.7 3.6 3.9.4-2.9 2.6.8 3.8-3.5-2-3.5 2 .8-3.8-2.9-2.6 3.9-.4z' fill='%23fff2a8' stroke='%23a45f00' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="estilo.css?v=1.1.6">
+<link rel="stylesheet" href="estilo.css?v=1.2.0">
 </head>
 <body>
 <!-- texto para buscadores, IAs e leitores de tela (o jogo em si é desenhado no canvas) -->
@@ -78,6 +78,11 @@
   <mask id="mk-bandeira" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><g fill="#000" opacity=".55"><rect x="7.4" y="4.6" width="2.9" height="2.9"/><rect x="13.2" y="4.6" width="2.9" height="2.9"/><rect x="10.3" y="7.5" width="2.9" height="2.9"/><rect x="16.1" y="7.5" width="2.9" height="2.9"/><rect x="7.4" y="10.4" width="2.9" height="2.9"/><rect x="13.2" y="10.4" width="2.9" height="2.9"/></g></mask>
 </defs>
 
+<symbol id="i-presente" viewBox="0 0 24 24"><path d="M3.5 9.2c0-.7.5-1.2 1.2-1.2h14.6c.7 0 1.2.5 1.2 1.2v2.3c0 .5-.4.9-.9.9H4.4a.9.9 0 0 1-.9-.9zM5 13.8h6.2V21H6.2A1.2 1.2 0 0 1 5 19.8zM12.8 13.8H19v6c0 .7-.5 1.2-1.2 1.2h-5z" fill="currentColor"/><path d="M12 8C10.6 5 7.2 3.8 6.6 5.6 6.1 7.2 9.4 8 12 8zm0 0c1.4-3 4.8-4.2 5.4-2.4.5 1.6-2.8 2.4-5.4 2.4z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+<symbol id="i-ajustes" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".45"/><circle cx="9" cy="7" r="2.6" fill="currentColor"/><circle cx="15.5" cy="12" r="2.6" fill="currentColor"/><circle cx="7.5" cy="17" r="2.6" fill="currentColor"/></symbol>
+<symbol id="i-vibra" viewBox="0 0 24 24"><rect x="8" y="3.5" width="8" height="17" rx="2" fill="currentColor"/><path d="M4.8 8.5 3 10.3l1.8 1.8-1.8 1.8 1.8 1.8M19.2 8.5l1.8 1.8-1.8 1.8 1.8 1.8-1.8 1.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-contraste" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M12 4.6a7.4 7.4 0 0 1 0 14.8z" fill="currentColor"/></symbol>
+<symbol id="i-movimento" viewBox="0 0 24 24"><path d="M3 9.5c2.2-3.2 4.4-3.2 6.6 0s4.4 3.2 6.6 0 3.3-2.2 4.8-1.1M3 15.5c2.2-3.2 4.4-3.2 6.6 0s4.4 3.2 6.6 0 3.3-2.2 4.8-1.1" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
 <symbol id="i-pausa" viewBox="0 0 24 24"><rect x="5.6" y="4.2" width="4.8" height="15.6" rx="1.8" fill="currentColor"/><rect x="13.6" y="4.2" width="4.8" height="15.6" rx="1.8" fill="currentColor"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7.6 5.3v13.4c0 1.1 1.2 1.7 2.1 1.1l10-6.7a1.3 1.3 0 0 0 0-2.2l-10-6.7c-.9-.6-2.1 0-2.1 1.1z" fill="currentColor"/></symbol>
 <symbol id="i-casa" viewBox="0 0 24 24"><path d="M11.2 3.4a1.3 1.3 0 0 1 1.6 0l8.1 6.7c.7.6.3 1.7-.6 1.7H19v7.7a1.5 1.5 0 0 1-1.5 1.5h-3.3v-5.2a1.2 1.2 0 0 0-1.2-1.2h-2a1.2 1.2 0 0 0-1.2 1.2V21H6.5A1.5 1.5 0 0 1 5 19.5v-7.7H3.7c-.9 0-1.3-1.1-.6-1.7z" fill="currentColor"/></symbol>
@@ -158,6 +163,7 @@
       <button id="bt-som" class="bt bt-mini"><svg class="ic ic-on" aria-hidden="true"><use href="#i-som"/></svg><svg class="ic ic-off" aria-hidden="true"><use href="#i-som-off"/></svg> Som</button>
       <button id="bt-musica" class="bt bt-mini"><svg class="ic ic-on" aria-hidden="true"><use href="#i-musica"/></svg><svg class="ic ic-off" aria-hidden="true"><use href="#i-musica-off"/></svg> Música</button>
       <button id="bt-ajuda" class="bt bt-mini"><svg class="ic" aria-hidden="true"><use href="#i-ajuda"/></svg> Como jogar</button>
+      <button id="bt-opcoes" class="bt bt-mini" aria-label="Opções"><svg class="ic" aria-hidden="true"><use href="#i-ajustes"/></svg> Opções</button>
     </div>
   </div>
 </section>
@@ -206,8 +212,18 @@
       <h2><span class="h-ic hi-roxo"><svg class="ic" aria-hidden="true"><use href="#i-alvo"/></svg></span>Missões</h2>
       <div class="chip">Multiplicador <b id="mi-mult">x1</b></div>
     </div>
-    <p class="sub">Complete as três para subir o multiplicador e ganhar moedas.</p>
-    <div id="lista-missoes"></div>
+    <div class="abas mi-abas" role="tablist" aria-label="Missões e conquistas">
+      <button class="aba mi-aba ativa" type="button" role="tab" data-mi="missoes"><svg class="ic" aria-hidden="true"><use href="#i-alvo"/></svg>Missões</button>
+      <button class="aba mi-aba" type="button" role="tab" data-mi="conquistas"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg>Conquistas <span id="mi-conq-n" class="mini-selo">0/0</span></button>
+    </div>
+    <div id="mi-missoes">
+      <p class="sub">Complete as três para subir o multiplicador e ganhar moedas.</p>
+      <div id="lista-missoes"></div>
+    </div>
+    <div id="mi-conquistas" class="oculto">
+      <p class="sub">Cada conquista vale moedas uma única vez.</p>
+      <div id="lista-conq" class="lista-conq"></div>
+    </div>
     <button class="bt bt-grande bt-voltar">Voltar</button>
   </div>
 </section>
@@ -245,12 +261,40 @@
   </div>
 </section>
 
+<!-- PRÊMIO DO DIA -->
+<section id="tela-diario" class="tela tela-painel oculto" aria-labelledby="diario-titulo">
+  <div class="painel painel-peq">
+    <h2 id="diario-titulo"><span class="h-ic hi-laranja"><svg class="ic" aria-hidden="true"><use href="#i-presente"/></svg></span>Prêmio do dia</h2>
+    <p class="sub" id="diario-sub">Volte todo dia: o prêmio cresce até o 7º dia.</p>
+    <div id="diario-dias" class="diario-dias"></div>
+    <button id="bt-diario" class="bt bt-grande"><svg class="ic" aria-hidden="true"><use href="#i-presente"/></svg>Pegar prêmio</button>
+  </div>
+</section>
+
+<!-- OPÇÕES -->
+<section id="tela-opcoes" class="tela tela-painel oculto">
+  <div class="painel painel-peq">
+    <h2><span class="h-ic hi-azul"><svg class="ic" aria-hidden="true"><use href="#i-ajustes"/></svg></span>Opções</h2>
+    <div class="opcoes">
+      <label class="opcao"><span class="op-ic op-verde"><svg class="ic" aria-hidden="true"><use href="#i-vibra"/></svg></span><span class="op-txt"><b>Vibração</b><small>Treme o celular ao bater e ao pegar poderes (Android).</small></span><input type="checkbox" id="op-vibra" role="switch"><i class="chave" aria-hidden="true"></i></label>
+      <label class="opcao"><span class="op-ic op-roxo"><svg class="ic" aria-hidden="true"><use href="#i-movimento"/></svg></span><span class="op-txt"><b>Reduzir movimento</b><small>Sem tremer a câmera, sem zoom de velocidade e sem animações nos botões.</small></span><input type="checkbox" id="op-movimento" role="switch"><i class="chave" aria-hidden="true"></i></label>
+      <label class="opcao"><span class="op-ic op-laranja"><svg class="ic" aria-hidden="true"><use href="#i-contraste"/></svg></span><span class="op-txt"><b>Mais contraste</b><small>Cena mais clara à noite, no túnel e na chuva, com menos névoa.</small></span><input type="checkbox" id="op-contraste" role="switch"><i class="chave" aria-hidden="true"></i></label>
+      <label class="opcao"><span class="op-ic op-azul"><svg class="ic" aria-hidden="true"><use href="#i-ajuda"/></svg></span><span class="op-txt"><b>Letras maiores</b><small>Aumenta os textos dos menus. Nos menus também dá para dar zoom com dois dedos.</small></span><input type="checkbox" id="op-letras" role="switch"><i class="chave" aria-hidden="true"></i></label>
+    </div>
+    <button class="bt bt-grande bt-voltar"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Pronto</button>
+  </div>
+</section>
+
 <!-- RANKING (ranking.js + ranking.php) -->
 <section id="tela-ranking" class="tela tela-painel oculto">
   <div class="painel">
     <div class="painel-topo">
       <h2><span class="h-ic hi-roxo"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg></span>Ranking</h2>
       <div class="chip">Top 50</div>
+    </div>
+    <div class="abas rk-abas" role="tablist" aria-label="Período do ranking">
+      <button class="aba rk-aba ativa" type="button" role="tab" data-periodo="semana"><svg class="ic" aria-hidden="true"><use href="#i-raio"/></svg>Da semana</button>
+      <button class="aba rk-aba" type="button" role="tab" data-periodo="geral"><svg class="ic" aria-hidden="true"><use href="#i-trofeu"/></svg>Geral</button>
     </div>
     <p id="rk-voce" class="sub rk-voce oculto"></p>
     <div id="rk-lista" class="rolagem rk-lista" aria-live="polite"></div>
@@ -261,13 +305,13 @@
 <div id="carregando">Carregando…</div>
 
 <script type="importmap">{"imports":{"three":"./lib/three.module.min.js"}}</script>
-<script type="module" src="jogo.js?v=1.1.6"></script>
+<script type="module" src="jogo.js?v=1.2.0"></script>
 <script>
 if ('serviceWorker' in navigator) addEventListener('load', () => {
   // atualização forçada: procura versão nova ao abrir, ao voltar pro app e a cada 30 min;
   // quando o SW novo assume, recarrega sozinho — mas nunca no meio de uma corrida
   const jaTinha = !!navigator.serviceWorker.controller;
-  navigator.serviceWorker.register('sw.js?v=1.1.6', { updateViaCache: 'none' }).then(reg => {
+  navigator.serviceWorker.register('sw.js?v=1.2.0', { updateViaCache: 'none' }).then(reg => {
     const busca = () => reg.update().catch(() => {});
     document.addEventListener('visibilitychange', () => { if (!document.hidden) busca(); });
     setInterval(busca, 30 * 60 * 1000);

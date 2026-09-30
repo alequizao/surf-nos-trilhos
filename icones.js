@@ -11,7 +11,8 @@
 //
 // Nomes disponíveis (symbol id = "i-" + nome):
 //   Interface ... pausa, play, casa, reiniciar, fechar, sacola (loja), alvo (missões),
-//                 som, som-off, musica, musica-off, ajuda, trofeu, estrela, check, cadeado, alerta
+//                 som, som-off, musica, musica-off, ajuda, trofeu, estrela, check, cadeado, alerta,
+//                 presente (prêmio do dia), ajustes (opções), vibra, contraste, movimento
 //   Poderes ..... ima, foguete (jato), tenis (tênis com mola), dobro (2x), prancha (hoverboard), raio
 //   Jogo ........ moeda, impacto (batida/prancha quebrou), susto (tropeço), bandeira (distância)
 //   Gestos ...... seta-cima, seta-baixo, seta-esq, seta-dir, toque-duplo
@@ -24,4 +25,4 @@ export const ic = (nome, cls = '') => `<svg class="ic ${cls}" aria-hidden="true"
 
 export const ICONES = ['pausa', 'play', 'casa', 'reiniciar', 'fechar', 'sacola', 'alvo', 'som', 'som-off', 'musica', 'musica-off',
   'ajuda', 'trofeu', 'estrela', 'check', 'cadeado', 'alerta', 'ima', 'foguete', 'tenis', 'dobro', 'prancha', 'raio', 'moeda',
-  'impacto', 'susto', 'bandeira', 'seta-cima', 'seta-baixo', 'seta-esq', 'seta-dir', 'toque-duplo', 'trem', 'barreira', 'placa', 'tapume'];
+  'impacto', 'susto', 'bandeira', 'presente', 'ajustes', 'vibra', 'contraste', 'movimento', 'seta-cima', 'seta-baixo', 'seta-esq', 'seta-dir', 'toque-duplo', 'trem', 'barreira', 'placa', 'tapume'];

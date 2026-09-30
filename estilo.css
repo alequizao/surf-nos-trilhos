@@ -13,8 +13,9 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;height:100%;overflow:hidden;background:#0f1c3f;color:var(--branco);
-  font-family:'Nunito',system-ui,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
-#cena{position:fixed;inset:0;width:100%;height:100%;display:block}
+  font-family:'Nunito',system-ui,sans-serif;touch-action:manipulation;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+#cena{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#hud{touch-action:none}
 .oculto{display:none!important}
 button{font:inherit;cursor:pointer;border:0;color:inherit}
 
@@ -349,3 +350,65 @@ button{font:inherit;cursor:pointer;border:0;color:inherit}
 @keyframes rk-gira{to{transform:rotate(360deg)}}
 #tela-ranking .painel{max-height:calc(100% - 10px)}
 @media (max-height:700px){.rk-form{padding:8px;gap:5px}.rk-form label{font-size:12px}}
+
+/* ---------- ranking: abas Semana / Geral ---------- */
+.rk-abas{margin:2px 0 8px}
+.rk-rev{display:inline-flex;align-items:center;gap:3px;color:#b4540a}.rk-rev .ic{font-size:.95em}
+.rk-rev0{color:#1a8a4d}
+
+/* ---------- foco visível (teclado) ---------- */
+.bt:focus-visible,.aba:focus-visible,.bt-redondo:focus-visible,.opcao:focus-within{outline:3px solid #ffd23f;outline-offset:3px}
+
+/* ---------- missões: abas e conquistas ---------- */
+.mi-abas{margin-bottom:2px}
+.mi-abas .mini-selo{margin-left:2px}
+.lista-conq{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.conq .conq-nome{display:block;font-size:15px}
+.conq:not(.feita) .missao-ic{background:linear-gradient(160deg,#c7cfe2,#8d9cc4);box-shadow:inset 0 2px 0 rgba(255,255,255,.4),inset 0 -3px 0 rgba(0,0,0,.14)}
+.conq:not(.feita) .conq-nome{color:#3a4560}
+.conq-premio{flex:none;display:inline-flex;align-items:center;gap:4px;font-family:'Lilita One',sans-serif;font-size:16px;color:var(--escuro)}
+.conq.feita .conq-premio{opacity:.55;text-decoration:line-through}
+#mi-missoes,#mi-conquistas{display:flex;flex-direction:column;gap:10px}
+#mi-conquistas.oculto,#mi-missoes.oculto{display:none!important}
+
+/* ---------- prêmio do dia ---------- */
+.diario-dias{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.dia{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px 8px;border-radius:16px;
+  background:linear-gradient(180deg,#fff,#f1f4fb);border:2px solid #dde3f0;box-shadow:0 3px 0 #d3dbec;color:var(--escuro)}
+.dia small{font-size:11.5px;font-weight:900;color:#66708c;text-transform:uppercase;letter-spacing:.3px}
+.dia b{font-family:'Lilita One',sans-serif;font-weight:400;font-size:18px}
+.dia .moeda-ic{width:22px;height:22px}
+.dia>.ic{font-size:22px;color:var(--verde)}
+.dia em{font-style:normal;font-size:12px;font-weight:900;color:var(--azul);display:inline-flex;align-items:center;gap:2px}
+.dia.pego{opacity:.6;background:linear-gradient(180deg,#f2fff7,#e2f9ec);border-color:#b6e8cb}
+.dia.hoje{border-color:var(--laranja);background:linear-gradient(180deg,#fff7ee,#ffe6cc);box-shadow:0 3px 0 #f0a060,0 0 0 4px rgba(255,122,26,.18);animation:respira 1.6s ease-in-out infinite}
+.dia7{grid-column:span 2;flex-direction:row;justify-content:center;gap:8px;flex-wrap:wrap}
+#bt-diario{font-size:26px}
+
+/* ---------- opções ---------- */
+.opcoes{display:flex;flex-direction:column;gap:8px;text-align:left}
+.opcao{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:18px;background:linear-gradient(180deg,#fff,#f3f6fc);
+  border:2px solid #e3e8f4;cursor:pointer;color:var(--escuro)}
+.op-ic{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:20px;box-shadow:inset 0 2px 0 rgba(255,255,255,.35),inset 0 -3px 0 rgba(0,0,0,.15)}
+.op-verde{background:linear-gradient(160deg,#6ff0a6,#1fc46b 55%,#0e8a46)}.op-roxo{background:linear-gradient(160deg,#c3a2ff,#8a4dff 55%,#5a24c9)}
+.op-laranja{background:linear-gradient(160deg,#ffc27a,#ff7a1a 55%,#d95300)}.op-azul{background:linear-gradient(160deg,#8fb0ff,#2f6bff 55%,#1a44c2)}
+.op-txt{flex:1;display:flex;flex-direction:column;min-width:0}
+.op-txt b{font-size:15.5px}.op-txt small{font-size:12.5px;font-weight:700;color:#66708c;line-height:1.3}
+.opcao input{position:absolute;opacity:0;width:1px;height:1px}
+.chave{flex:none;width:46px;height:28px;border-radius:99px;background:#c9d1e4;position:relative;transition:background .15s;box-shadow:inset 0 2px 3px rgba(15,28,63,.2)}
+.chave::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:transform .15s}
+.opcao input:checked+.chave{background:var(--verde)}
+.opcao input:checked+.chave::after{transform:translateX(18px)}
+
+/* ---------- reduzir movimento (opção ou sistema) ---------- */
+.menos-mov #bt-jogar,.menos-mov .painel,.menos-mov .dia.hoje,.menos-mov .novo-recorde,.menos-mov #aviso-pers,.menos-mov .barra i::after{animation:none!important}
+.menos-mov #toast,.menos-mov .chave,.menos-mov .chave::after,.menos-mov .bt{transition:none!important}
+.menos-mov #hud-moedas.pula{animation:none!important}
+
+/* ---------- letras maiores ---------- */
+.letras-grandes .sub,.letras-grandes .missao-txt,.letras-grandes .op-txt b{font-size:17px}
+.letras-grandes .missao-num,.letras-grandes .rk-info small,.letras-grandes .op-txt small,.letras-grandes .item-info small,.letras-grandes .dia small{font-size:14.5px}
+.letras-grandes .rk-nome,.letras-grandes .item-info b,.letras-grandes .rk-msg,.letras-grandes .rk-form label{font-size:17px}
+.letras-grandes .ajuda li{font-size:17px}
+.letras-grandes .aba{font-size:15.5px}
+.letras-grandes #toast{font-size:17px}

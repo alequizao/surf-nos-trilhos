@@ -1,7 +1,7 @@
 # 🚆 Surf nos Trilhos — jogo de corrida infinita 3D no navegador
 
 [![Jogar agora](https://img.shields.io/badge/▶_Jogar_agora-alequizao.com%2Fsurf-ff7a1a?style=for-the-badge)](https://alequizao.com/surf/)
-![Versão](https://img.shields.io/badge/versão-1.1.6-2f6bff?style=for-the-badge)
+![Versão](https://img.shields.io/badge/versão-1.2.0-2f6bff?style=for-the-badge)
 ![Three.js](https://img.shields.io/badge/Three.js-r170-000?style=for-the-badge&logo=three.js)
 ![PWA](https://img.shields.io/badge/PWA-offline-1fc46b?style=for-the-badge)
 
@@ -18,6 +18,10 @@
 | <img src="docs/img/01-menu.jpg" width="300"> | <img src="docs/img/02-corrida.jpg" width="300"> |
 | **Trens parados** | **Jetpack em cima dos trens** |
 | <img src="docs/img/03-trens-parados.jpg" width="300"> | <img src="docs/img/05-jetpack-em-cima-dos-trens.jpg" width="300"> |
+| **Prêmio do dia** | **Conquistas** |
+| <img src="docs/img/16-premio-do-dia.jpg" width="300"> | <img src="docs/img/17-conquistas.jpg" width="300"> |
+| **Ranking da semana** | **Placa do seu recorde na pista** |
+| <img src="docs/img/19-ranking-semana.jpg" width="300"> | <img src="docs/img/20-placa-recorde.jpg" width="300"> |
 
 <details>
 <summary><b>Mais telas</b> (trem na contramão, obstáculos, loja, missões, personagens, desktop)</summary>
@@ -29,6 +33,8 @@
 | <img src="docs/img/06b-rampa.jpg" width="300"> | <img src="docs/img/13-como-jogar.jpg" width="300"> |
 | **Loja de personagens** | **Missões** |
 | <img src="docs/img/08-loja-personagens.jpg" width="300"> | <img src="docs/img/10-missoes.jpg" width="300"> |
+| **Opções de acessibilidade** | |
+| <img src="docs/img/18-opcoes.jpg" width="300"> | |
 
 | Personagens | Moedas e poderes |
 |:---:|:---:|
@@ -54,13 +60,19 @@
 
   <img src="docs/img/clima-chuva.jpg" alt="Corrida na chuva" width="260">
 
-- 🏆 **Ranking online:** ao perder, salve o placar com o nome ou o @ do Instagram e veja a posição (PHP + SQLite; o banco fica fora do repositório).
+- 🏆 **Ranking online com abas "Da semana" e "Geral":** ao perder, salve o placar com o nome ou o @ do Instagram (PHP + SQLite; o banco fica fora do repositório). O semanal zera toda segunda (horário de Maceió) e cada linha mostra quantas vezes a pessoa usou "continuar correndo" naquela corrida.
+- 🛡️ **Ranking à prova de trapaça simples:** cada corrida recebe um código do servidor ao começar, e ele recusa distâncias impossíveis para o tempo real de jogo. O nome fica **travado no aparelho** que o salvou primeiro, e o filtro recusa nomes ofensivos.
+- 🎁 **Prêmio do dia** com sequência de 7 dias (100 → 800 moedas + 1 prancha no 7º).
+- 🏅 **16 conquistas** com prêmio em moedas (1 km, 10 km, sem tropeçar, sem reviver, 100 mil pontos, Tio Patinhas…).
+- 🚩 **Placa "SEU RECORDE"** atravessando a pista na sua maior distância.
+- 📳 **Vibração** ao bater, tropeçar e pegar poderes (Android).
+- ♿ **Opções de acessibilidade:** reduzir movimento (segue a configuração do sistema), mais contraste à noite e na chuva, letras maiores e zoom com dois dedos nos menus.
 - 🚇 **Túnel do Farol e ponte sobre a Lagoa Mundaú**, pista sempre com saída e continuar ilimitado com moedas.
 - **Cenário 3D realista:** sombras em tempo real, céu com nuvens e reflexos (PBR + environment map), trilhos de aço com brita e dormentes de concreto, muros grafitados, prédios com sacadas e caixas d'água, coqueiros e rede elétrica.
 - **Trens** em 4 pinturas com letreiro LED (Maceió, Jaraguá, Bebedouro, Rio Largo, Fernão Velho, Satuba); trens na contramão com farol aceso.
 - **Obstáculos:** barreira listrada (pular), placa ABAIXE! (rolar), tapume de obra (desviar), rampas para correr em cima dos vagões.
 - **Poderes:** ímã de moedas, jetpack, tênis mola e pontos 2x — com níveis na loja.
-- **Loja:** personagens (Léo, Duda, Bento, Nina Neon), pranchas e melhorias.
+- **Loja:** personagens (Alex, Duda, Bento, Nina Neon), pranchas e melhorias.
 - **Missões** com multiplicador de pontos permanente.
 - **Som e trilha** sintetizados com WebAudio.
 - **PWA:** instala como app e funciona offline.
@@ -80,6 +92,8 @@
 | `objetos.js` | trens, rampa e obstáculos |
 | `itens.js` | moedas e poderes |
 | `icones.js` | helper dos ícones SVG |
+| `biomas.js` / `clima.js` | túnel, ponte, ciclo dia/noite e clima |
+| `ranking.js` / `ranking.php` | ranking online (semana/geral, código da corrida, dono do nome) |
 | `estilo.css` | interface |
 | `sw.js` / `manifest.webmanifest` | PWA offline |
 

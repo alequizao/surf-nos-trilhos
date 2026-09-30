@@ -4,14 +4,14 @@
  */
 // Surf nos Trilhos — corrida infinita nos trilhos (Alequizão)
 import * as THREE from 'three';
-import { ic } from './icones.js?v=1.1.6';
-import { criaCorredor as modeloCorredor, criaVigia as modeloVigia } from './personagens.js?v=1.1.6';
-import { criaVisualTrem, criaVisualRampa, criaVisualBarreira, animaObjetos } from './objetos.js?v=1.1.6';
-import { GEO_MOEDA, MATS_MOEDA, criaVisualPoder, animaItens } from './itens.js?v=1.1.6';
-import { iniciaRanking, rankingFim } from './ranking.js?v=1.1.6';
-import { criaBiomas } from './biomas.js?v=1.1.6';
+import { ic } from './icones.js?v=1.2.0';
+import { criaCorredor as modeloCorredor, criaVigia as modeloVigia } from './personagens.js?v=1.2.0';
+import { criaVisualTrem, criaVisualRampa, criaVisualBarreira, animaObjetos } from './objetos.js?v=1.2.0';
+import { GEO_MOEDA, MATS_MOEDA, criaVisualPoder, animaItens } from './itens.js?v=1.2.0';
+import { iniciaRanking, rankingInicio, rankingFim } from './ranking.js?v=1.2.0';
+import { criaBiomas } from './biomas.js?v=1.2.0';
 
-const VERSAO = '1.1.6';
+const VERSAO = '1.2.0';
 const LANE = 2.6;          // distância entre trilhos
 const GRAV = 38;
 const PULO = 14.5;
@@ -29,12 +29,18 @@ const fmt = n => Math.floor(n).toLocaleString('pt-BR');
 
 // ================= SAVE =================
 const padrao = () => ({ recorde: 0, moedas: 0, pranchas: 2, nivel: { ima: 0, jato: 0, tenis: 0, dobro: 0 },
-  skin: 0, skins: [0], multNivel: 0, missoes: null, som: true, musica: true, corridas: 0 });
+  skin: 0, skins: [0], multNivel: 0, missoes: null, som: true, musica: true, corridas: 0,
+  diario: { ultimo: '', seq: 0 }, conq: {}, tot: { moedas: 0, trens: 0, jatos: 0 }, melhorDist: 0,
+  vibra: true, movimento: null, contraste: false, letras: false }); // movimento: null = segue o sistema (prefers-reduced-motion)
 let S = carregar();
 function carregar() {
   try {
     const j = JSON.parse(localStorage.getItem(CHAVE));
-    if (j) { const p = padrao(); return Object.assign(p, j, { nivel: Object.assign(p.nivel, j.nivel || {}) }); }
+    if (j) {
+      const p = padrao();
+      return Object.assign(p, j, { nivel: Object.assign(p.nivel, j.nivel || {}), tot: Object.assign(p.tot, j.tot || {}),
+        diario: Object.assign(p.diario, j.diario || {}), conq: j.conq || {} });
+    }
   } catch (e) {}
   return padrao();
 }
@@ -94,10 +100,52 @@ function checaMissoes() {
     S.multNivel = Math.min(29, S.multNivel + 1);
     const premio = 150 + 50 * S.multNivel; S.moedas += premio;
     setTimeout(() => toast(ic('estrela') + `<span>Multiplicador x${mult()}! +${premio} moedas</span>`), 1800);
+    setTimeout(checaConquistas, 4200);
     novasMissoes();
   }
   salvar();
 }
+
+// ================= CONQUISTAS =================
+// ok() roda com a corrida (R) ou fora dela (R = null); cada uma paga uma vez só
+const CONQ = [
+  { id: 'km1',     nome: 'Primeiro quilômetro', desc: 'Corra 1.000 m numa corrida',                  premio: 200,  ok: () => R && R.dist >= 1000 },
+  { id: 'km5',     nome: 'Maratonista',         desc: 'Corra 5.000 m numa corrida',                  premio: 800,  ok: () => R && R.dist >= 5000 },
+  { id: 'km10',    nome: 'Imparável',           desc: 'Corra 10.000 m numa corrida',                 premio: 2000, ok: () => R && R.dist >= 10000 },
+  { id: 'limpo1',  nome: 'Sem um arranhão',     desc: 'Corra 1.000 m sem tropeçar nem bater',        premio: 400,  ok: () => R && R.dist - R.limpoDesde >= 1000 },
+  { id: 'limpo3',  nome: 'Liso',                desc: 'Corra 3.000 m sem tropeçar nem bater',        premio: 1200, ok: () => R && R.dist - R.limpoDesde >= 3000 },
+  { id: 'raiz',    nome: 'Raiz',                desc: 'Corra 3.000 m sem usar "continuar correndo"', premio: 800,  ok: () => R && R.dist >= 3000 && !R.continuou },
+  { id: 'recorde', nome: 'Superação',           desc: 'Passe a placa da sua maior distância',        premio: 300,  ok: () => R && R.passouRecorde },
+  { id: 'pts100k', nome: 'Cem mil',             desc: 'Faça 100.000 pontos numa corrida',            premio: 1500, ok: () => R && R.pontos >= 100000 },
+  { id: 'pulos',   nome: 'Canguru',             desc: 'Pule 100 vezes numa corrida',                 premio: 400,  ok: () => R && (corridaStats.pulos || 0) >= 100 },
+  { id: 'trens',   nome: 'Rei dos vagões',      desc: 'Corra em cima de 50 trens (no total)',        premio: 500,  ok: () => S.tot.trens >= 50 },
+  { id: 'moeda1k', nome: 'Cofrinho',            desc: 'Junte 1.000 moedas (no total)',               premio: 300,  ok: () => S.tot.moedas >= 1000 },
+  { id: 'moeda10k',nome: 'Tio Patinhas',        desc: 'Junte 10.000 moedas (no total)',              premio: 1500, ok: () => S.tot.moedas >= 10000 },
+  { id: 'jatos',   nome: 'Astronauta',          desc: 'Pegue o jato 10 vezes (no total)',            premio: 400,  ok: () => S.tot.jatos >= 10 },
+  { id: 'mult10',  nome: 'Multiplicador x10',   desc: 'Chegue ao multiplicador x10 nas missões',     premio: 1000, ok: () => mult() >= 10 },
+  { id: 'fiel',    nome: 'Fiel',                desc: 'Pegue o prêmio do dia 7 dias seguidos',       premio: 700,  ok: () => S.diario.seq >= 7 },
+  { id: 'estilo',  nome: 'Estiloso',            desc: 'Libere um personagem novo na loja',           premio: 300,  ok: () => S.skins.length > 1 },
+];
+function checaConquistas() {
+  const novas = CONQ.filter(c => !S.conq[c.id] && c.ok());
+  if (!novas.length) return;
+  novas.forEach((c, i) => {
+    S.conq[c.id] = hojeStr(); S.moedas += c.premio;
+    setTimeout(() => { SFX.missao(); vibra([30, 40, 30]); toast(ic('trofeu') + `<span>Conquista: <b>${c.nome}</b> · +${fmt(c.premio)} moedas</span>`); }, i * 2400);
+  });
+  salvar();
+}
+
+// ================= PRÊMIO DO DIA =================
+const PREMIO_DIA = [100, 150, 200, 300, 400, 500, 800]; // 7º dia: +1 prancha
+const hojeStr = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const ontemStr = () => { const d = new Date(); d.setDate(d.getDate() - 1); return hojeStr(d); };
+const diarioPendente = () => S.diario.ultimo !== hojeStr();
+const proximoDia = () => (S.diario.ultimo === ontemStr() ? S.diario.seq % 7 + 1 : 1);
+
+// ================= VIBRAÇÃO (Android; o iPhone ignora) =================
+function vibra(padraoV) { if (!S.vibra || !navigator.vibrate) return; try { navigator.vibrate(padraoV); } catch (e) { /* sem suporte */ } }
+const menosMov = () => S.movimento ?? matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ================= ÁUDIO =================
 let AC = null, master = null, bufRuido = null;
@@ -1040,10 +1088,44 @@ function novaCorrida() {
   limpaPista(); resetGerador();
   R = { dist: 0, vel: 14, lane: 1, laneAnt: 1, x: 0, xAnt: 0, y: 0, vy: 0, noChao: true, rolando: 0, pedidoPulo: 0,
     pontos: 0, moedas: 0, poder: { ima: 0, jato: 0, tenis: 0, dobro: 0 }, prancha: 0, invul: 0, persegue: 0,
-    gapVigia: 3, tempo: 0, trens: new Set(), continuou: false, morteT: 0, fase: 0, shake: 0, jatoPousando: 0 };
+    gapVigia: 3, tempo: 0, trens: new Set(), continuou: false, morteT: 0, fase: 0, shake: 0, jatoPousando: 0,
+    revives: 0, limpoDesde: 0, passouRecorde: false, conqT: 0 };
   corridaStats = {};
+  criaMarcaRecorde();
   trechos.forEach((t, i) => posicionaTrecho(t, (i - 1) * TRECHO));
   vigia.root.visible = true;
+}
+
+// ---------- placa "SEU RECORDE" atravessando a pista na sua maior distância ----------
+let marca = null;
+function removeMarca() {
+  if (!marca) return;
+  scene.remove(marca);
+  marca.traverse(o => { if (o.isMesh) { o.geometry.dispose(); if (o.material.map) o.material.map.dispose(); o.material.dispose(); } });
+  marca = null;
+}
+function criaMarcaRecorde() {
+  removeMarca();
+  const d = Math.floor(S.melhorDist || 0);
+  if (d < 150) return;
+  const cv = document.createElement('canvas'); cv.width = 1024; cv.height = 192;
+  const c = cv.getContext('2d');
+  const gr = c.createLinearGradient(0, 0, 0, 192); gr.addColorStop(0, '#ffa24a'); gr.addColorStop(1, '#e05500');
+  c.fillStyle = '#0f1c3f'; c.beginPath(); c.roundRect(0, 0, 1024, 192, 40); c.fill();
+  c.fillStyle = gr; c.beginPath(); c.roundRect(10, 10, 1004, 172, 32); c.fill();
+  c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.font = '400 92px "Lilita One", "Nunito", sans-serif'; c.shadowColor = 'rgba(90,30,0,.55)'; c.shadowOffsetY = 6;
+  c.fillText('SEU RECORDE · ' + fmt(d) + ' m', 512, 100);
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  const g = new THREE.Group();
+  const faixa = new THREE.Mesh(new THREE.PlaneGeometry(8.6, 1.61), new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide }));
+  faixa.position.y = 6.4; g.add(faixa);
+  const matPoste = new THREE.MeshLambertMaterial({ color: 0x0f1c3f });
+  for (const x of [-4.45, 4.45]) { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 7.2, 8), matPoste.clone()); p.position.set(x, 3.6, 0); g.add(p); }
+  const chao = new THREE.Mesh(new THREE.PlaneGeometry(8.6, 0.55), new THREE.MeshBasicMaterial({ color: 0xffd23f, transparent: true, opacity: 0.85 }));
+  chao.rotation.x = -Math.PI / 2; chao.position.y = 0.06; g.add(chao);
+  g.position.z = -d; g.userData.d = d;
+  scene.add(g); marca = g;
 }
 
 // ================= ENTRADA =================
@@ -1105,13 +1187,13 @@ function tropeca(parede = false) {
   if (R.prancha > 0) { quebraPrancha(); return; }
   R.shake = 0.35;
   if (R.persegue > 0) { morre(); return; }
-  SFX.tropeco(); R.persegue = 6; R.tropeco = 0.4;
+  SFX.tropeco(); vibra(50); R.persegue = 6; R.tropeco = 0.4; R.limpoDesde = R.dist;
   if (parede) R.x += (R.lane === 0 ? 0.35 : -0.35);
 }
-function quebraPrancha() { R.prancha = 0; R.invul = 1.3; R.shake = 0.3; SFX.quebra(); toast(ic('impacto') + '<span>A prancha quebrou!</span>'); }
+function quebraPrancha() { R.prancha = 0; R.invul = 1.3; R.shake = 0.3; R.limpoDesde = R.dist; SFX.quebra(); vibra(80); toast(ic('impacto') + '<span>A prancha quebrou!</span>'); }
 function morre() {
   if (estado !== 'jogando') return;
-  estado = 'morrendo'; R.morteT = 0; R.shake = 0.6; SFX.batida(); musicaDesliga();
+  estado = 'morrendo'; R.morteT = 0; R.shake = 0.6; SFX.batida(); vibra([90, 50, 180]); musicaDesliga();
 }
 function colide(o) {
   if (R.invul > 0 || R.poder.jato > 0) return;
@@ -1167,7 +1249,7 @@ function fisica(dt) {
     else R.noChao = R.y - chao < 0.02;
     if (R.noChao && R.pedidoPulo > 0) pula();
   }
-  if (emTrem && R.noChao && !R.trens.has(emTrem.id)) { R.trens.add(emTrem.id); evento('trens'); }
+  if (emTrem && R.noChao && !R.trens.has(emTrem.id)) { R.trens.add(emTrem.id); S.tot.trens++; evento('trens'); }
   R.pedidoPulo = Math.max(0, R.pedidoPulo - dt);
   R.coyote = R.noChao ? 0.12 : Math.max(0, (R.coyote || 0) - dt);
 }
@@ -1191,7 +1273,7 @@ function atualiza(dt) {
     c.m.rotation.y += dt * 4;
     if (Math.abs(c.d - R.dist) < 1.0 && Math.abs(c.x - R.x) < 1.0 && Math.abs(c.y - py) < 1.4) {
       scene.remove(c.m); moedas.splice(i, 1);
-      R.moedas++; R.pontos += 5 * mult(); SFX.moeda(); evento('moedas'); pulaMoeda();
+      R.moedas++; S.tot.moedas++; R.pontos += 5 * mult(); SFX.moeda(); evento('moedas'); pulaMoeda();
     }
   }
   // poderes
@@ -1213,6 +1295,13 @@ function atualiza(dt) {
   R.persegue = Math.max(0, R.persegue - dt);
   R.rolando = Math.max(0, R.rolando - dt);
   R.shake = Math.max(0, R.shake - dt);
+
+  // placa "seu recorde" e conquistas (2x por segundo basta)
+  if (marca && !R.passouRecorde && R.dist >= marca.userData.d) {
+    R.passouRecorde = true; SFX.missao(); vibra(40); toast(ic('bandeira') + '<span>Você passou sua maior distância!</span>');
+  }
+  if (marca && R.dist > marca.userData.d + 25) removeMarca();
+  R.conqT += dt; if (R.conqT > 0.5) { R.conqT = 0; checaConquistas(); }
 
   // pontos
   R.pontos += R.vel * dt * mult() * (R.poder.dobro > 0 ? 2 : 1) * 0.6;
@@ -1240,7 +1329,8 @@ function atualizaMissaoCorrida(tipo, valor) {
   }
 }
 function pegaPoder(k) {
-  R.poder[k] = duracao(k); SFX.poder(); evento('poderes');
+  R.poder[k] = duracao(k); SFX.poder(); evento('poderes'); vibra(25);
+  if (k === 'jato') S.tot.jatos++;
   toast(PODERES[k].ic + '<span>' + PODERES[k].nome + '!</span>');
   if (k === 'jato') {
     SFX.jato(); R.rolando = 0;
@@ -1361,10 +1451,10 @@ function atualizaCamera(dt) {
   camPos.set(R.x * 0.8, 4.3 + camY * 0.85, -R.dist + 7.6);
   camera.position.lerp(camPos, Math.min(1, dt * 10));
   camera.position.z = camPos.z;
-  if (R.shake > 0) { camera.position.x += (Math.random() - .5) * R.shake * 1.2; camera.position.y += (Math.random() - .5) * R.shake * 1.2; }
+  if (R.shake > 0 && !menosMov()) { camera.position.x += (Math.random() - .5) * R.shake * 1.2; camera.position.y += (Math.random() - .5) * R.shake * 1.2; }
   camOlha.set(R.x * 0.9, 1.2 + camY * 0.8, -R.dist - 12);
   camera.lookAt(camOlha);
-  const fov = camera.userData.fovBase + (R.vel - 14) * 0.35;
+  const fov = camera.userData.fovBase + (menosMov() ? 0 : (R.vel - 14) * 0.35);
   if (Math.abs(camera.fov - fov) > 0.05) { camera.fov = fov; camera.updateProjectionMatrix(); }
 }
 
@@ -1395,7 +1485,7 @@ function toast(msg) {
 }
 
 // ================= TELAS =================
-const telas = ['#tela-menu', '#tela-ajuda', '#tela-loja', '#tela-missoes', '#tela-pausa', '#tela-fim', '#tela-ranking'];
+const telas = ['#tela-menu', '#tela-ajuda', '#tela-loja', '#tela-missoes', '#tela-pausa', '#tela-fim', '#tela-ranking', '#tela-diario', '#tela-opcoes'];
 function mostra(id) { telas.forEach(t => $(t).classList.toggle('oculto', t !== id)); $('#hud').classList.toggle('oculto', !(estado === 'jogando' || estado === 'pausado' || estado === 'morrendo')); }
 function atualizaMenu() {
   $('#m-moedas').textContent = fmt(S.moedas); $('#m-pranchas').textContent = S.pranchas; $('#m-recorde').textContent = fmt(S.recorde);
@@ -1405,11 +1495,12 @@ function atualizaMenu() {
 function irMenu() {
   estado = 'menu'; musicaDesliga(); limpaPista(); R = null;
   trechos.forEach((t, i) => posicionaTrecho(t, (i - 1) * TRECHO));
-  heroi.root.visible = true;
+  heroi.root.visible = true; removeMarca();
   atualizaMenu(); mostra('#tela-menu');
+  if (diarioPendente()) setTimeout(() => estado === 'menu' && !$('#tela-menu').classList.contains('oculto') && abreDiario(), 500);
 }
 function iniciar() {
-  audio(); novaCorrida(); estado = 'jogando'; mostra(null); hud();
+  audio(); novaCorrida(); rankingInicio(); estado = 'jogando'; mostra(null); hud();
   if (S.musica) musicaLiga();
   if (S.corridas < 3) setTimeout(() => estado === 'jogando' && toast(ic('seta-cima') + '<span>Deslize pra CIMA: pula a barreira listrada · pra BAIXO: passa sob a placa ABAIXE!</span>'), 600);
 }
@@ -1420,6 +1511,8 @@ function fimDeJogo() {
   estado = 'fim';
   const novo = R.pontos > S.recorde;
   if (novo) S.recorde = Math.floor(R.pontos);
+  S.melhorDist = Math.max(S.melhorDist || 0, Math.floor(R.dist));
+  checaConquistas();
   somaMoedas(); S.corridas++; salvar();
   $('#fim-titulo').textContent = escolhe(['Pego!', 'Ops!', 'Não deu!', 'Quase!']);
   $('#fim-recorde').classList.toggle('oculto', !novo);
@@ -1430,7 +1523,7 @@ function fimDeJogo() {
   const bt = $('#bt-reviver');
   bt.classList.remove('oculto'); bt.disabled = S.moedas < custoReviver;
   bt.title = S.moedas < custoReviver ? `Faltam ${fmt(custoReviver - S.moedas)} moedas` : '';
-  rankingFim({ pontos: R.pontos, moedas: R.moedas, dist: R.dist });
+  rankingFim({ pontos: R.pontos, moedas: R.moedas, dist: R.dist, revives: R.revives || 0 });
   mostra('#tela-fim');
 }
 // soma ao cofre só as moedas ainda não somadas (continuar não duplica)
@@ -1438,7 +1531,7 @@ function somaMoedas() { S.moedas += R.moedas - (R.somadas || 0); R.somadas = R.m
 function reviver() {
   if (S.moedas < custoReviver) return;
   S.moedas -= custoReviver; salvar();
-  R.continuou = true;
+  R.continuou = true; R.revives = (R.revives || 0) + 1; R.limpoDesde = R.dist;
   for (let i = obst.length - 1; i >= 0; i--) { const o = obst[i]; if (o.d1 > R.dist - 3 && o.d0 < R.dist + 45) { scene.remove(o.g); obst.splice(i, 1); } }
   R.invul = 3; R.persegue = 0; R.gapVigia = 10; R.shake = 0; R.vy = 0; R.rolando = 0;
   estado = 'jogando'; mostra(null); SFX.poder(); if (S.musica) musicaLiga(); ultimo = performance.now();
@@ -1454,7 +1547,7 @@ let abaLoja = 'poderes';
 function hex(c) { return '#' + c.toString(16).padStart(6, '0'); }
 function renderLoja() {
   $('#l-moedas').textContent = fmt(S.moedas);
-  document.querySelectorAll('.aba').forEach(a => a.classList.toggle('ativa', a.dataset.aba === abaLoja));
+  document.querySelectorAll('#tela-loja .aba').forEach(a => a.classList.toggle('ativa', a.dataset.aba === abaLoja));
   let html = '';
   if (abaLoja === 'poderes') {
     for (const k in PODERES) {
@@ -1488,14 +1581,70 @@ $('#loja-conteudo').addEventListener('click', e => {
     SFX.compra();
   } else if (b.dataset.skin) {
     const i = +b.dataset.skin; if (S.moedas < SKINS[i].preco) return;
-    S.moedas -= SKINS[i].preco; S.skins.push(i); S.skin = i; trocaSkin(i); SFX.compra();
+    S.moedas -= SKINS[i].preco; S.skins.push(i); S.skin = i; trocaSkin(i); SFX.compra(); checaConquistas();
   } else if (b.dataset.usar) { S.skin = +b.dataset.usar; trocaSkin(S.skin); SFX.lado(); }
   salvar(); renderLoja();
 });
-document.querySelectorAll('.aba').forEach(a => a.addEventListener('click', () => { abaLoja = a.dataset.aba; renderLoja(); }));
+document.querySelectorAll('#tela-loja .aba').forEach(a => a.addEventListener('click', () => { abaLoja = a.dataset.aba; renderLoja(); }));
 $('#bt-jogar').onclick = iniciar;
 $('#bt-loja').onclick = () => { audio(); renderLoja(); mostra('#tela-loja'); };
-$('#bt-missoes').onclick = () => { audio(); renderMissoes('#lista-missoes'); $('#mi-mult').textContent = 'x' + mult(); mostra('#tela-missoes'); };
+function renderConquistas() {
+  const feitas = CONQ.filter(c => S.conq[c.id]).length;
+  $('#mi-conq-n').textContent = `${feitas}/${CONQ.length}`;
+  $('#lista-conq').innerHTML = CONQ.map(c => {
+    const f = !!S.conq[c.id];
+    return `<div class="missao conq${f ? ' feita' : ''}"><div class="missao-ic">${ic(f ? 'trofeu' : 'cadeado')}</div><div class="missao-txt"><b class="conq-nome">${c.nome}</b>
+      <div class="missao-num">${c.desc}</div></div><div class="conq-premio"><span class="moeda-ic"></span>${fmt(c.premio)}</div></div>`;
+  }).join('');
+}
+function abaMissoes(qual) {
+  document.querySelectorAll('.mi-aba').forEach(a => { const on = a.dataset.mi === qual; a.classList.toggle('ativa', on); a.setAttribute('aria-selected', on); });
+  $('#mi-missoes').classList.toggle('oculto', qual !== 'missoes'); $('#mi-conquistas').classList.toggle('oculto', qual !== 'conquistas');
+}
+document.querySelectorAll('.mi-aba').forEach(a => a.addEventListener('click', () => { audio(); abaMissoes(a.dataset.mi); }));
+$('#bt-missoes').onclick = () => { audio(); renderMissoes('#lista-missoes'); renderConquistas(); abaMissoes('missoes'); $('#mi-mult').textContent = 'x' + mult(); mostra('#tela-missoes'); };
+
+function abreDiario() {
+  const dia = proximoDia();
+  $('#diario-dias').innerHTML = PREMIO_DIA.map((p, i) => {
+    const n = i + 1, cls = n < dia ? ' pego' : n === dia ? ' hoje' : '';
+    return `<div class="dia${cls}${n === 7 ? ' dia7' : ''}"><small>Dia ${n}</small>${n < dia ? ic('check') : '<span class="moeda-ic"></span>'}<b>${fmt(p)}</b>${n === 7 ? `<em>${ic('prancha')} +1</em>` : ''}</div>`;
+  }).join('');
+  $('#diario-sub').textContent = dia > 1 ? `${dia} dias seguidos! Não perca a sequência amanhã.` : 'Volte todo dia: o prêmio cresce até o 7º dia.';
+  mostra('#tela-diario');
+}
+$('#bt-diario').onclick = () => {
+  audio();
+  if (!diarioPendente()) { atualizaMenu(); mostra('#tela-menu'); return; }
+  const dia = proximoDia(), p = PREMIO_DIA[dia - 1];
+  S.diario = { ultimo: hojeStr(), seq: dia }; S.moedas += p; if (dia === 7) S.pranchas++;
+  salvar(); SFX.compra(); vibra(40);
+  atualizaMenu(); mostra('#tela-menu');
+  toast(ic('presente') + `<span>Prêmio do dia ${dia}: +${fmt(p)} moedas${dia === 7 ? ' e 1 prancha' : ''}!</span>`);
+  setTimeout(checaConquistas, 2400);
+};
+
+function aplicaOpcoes() {
+  document.body.classList.toggle('menos-mov', menosMov());
+  document.body.classList.toggle('letras-grandes', !!S.letras);
+}
+const OPCOES = { '#op-vibra': 'vibra', '#op-movimento': 'movimento', '#op-contraste': 'contraste', '#op-letras': 'letras' };
+$('#bt-opcoes').onclick = () => {
+  audio();
+  for (const [sel, k] of Object.entries(OPCOES)) $(sel).checked = k === 'movimento' ? menosMov() : !!S[k];
+  mostra('#tela-opcoes');
+};
+for (const [sel, k] of Object.entries(OPCOES)) $(sel).addEventListener('change', e => {
+  S[k] = e.target.checked; salvar(); aplicaOpcoes(); SFX.lado();
+  if (k === 'vibra' && S.vibra) vibra(60);
+});
+aplicaOpcoes();
+// "Mais contraste": ignora a névoa extra da chuva/nublado e não deixa a luz ambiente cair à noite/no túnel
+function aplicaContraste() {
+  if (!S.contraste) return;
+  hemi.intensity = Math.max(hemi.intensity, 1.05);
+  scene.fog.near = Math.max(scene.fog.near, 70); scene.fog.far = Math.max(scene.fog.far, 235);
+}
 $('#bt-ajuda').onclick = () => { audio(); mostra('#tela-ajuda'); };
 iniciaRanking({ mostra, audio });
 document.querySelectorAll('.bt-voltar').forEach(b => b.onclick = () => { atualizaMenu(); mostra('#tela-menu'); });
@@ -1503,7 +1652,7 @@ $('#bt-som').onclick = () => { S.som = !S.som; salvar(); audio(); atualizaMenu()
 $('#bt-musica').onclick = () => { S.musica = !S.musica; salvar(); atualizaMenu(); };
 $('#bt-pausa').onclick = pausa;
 $('#bt-continuar-pausa').onclick = retoma;
-$('#bt-sair').onclick = () => { if (R) { somaMoedas(); if (R.pontos > S.recorde) S.recorde = Math.floor(R.pontos); salvar(); } irMenu(); };
+$('#bt-sair').onclick = () => { if (R) { somaMoedas(); if (R.pontos > S.recorde) S.recorde = Math.floor(R.pontos); S.melhorDist = Math.max(S.melhorDist || 0, Math.floor(R.dist)); salvar(); } irMenu(); };
 $('#bt-reviver').onclick = reviver;
 $('#bt-denovo').onclick = iniciar;
 $('#bt-menu').onclick = irMenu;
@@ -1521,7 +1670,7 @@ function loop(t) {
   if (estado === 'jogando') atualiza(dt);
   else if (estado === 'morrendo') atualizaMorte(dt);
   animaHeroi(dt); animaVigia(dt); atualizaCamera(dt);
-  atualizaVisual(t);
+  atualizaVisual(t); aplicaContraste();
   renderer.render(scene, camera);
   // qualidade adaptativa: se ficar pesado, reduz a resolução
   if (estado === 'jogando') {
@@ -1534,6 +1683,7 @@ function loop(t) {
   }
 }
 atualizaMenu(); mostra('#tela-menu');
+if (diarioPendente()) setTimeout(() => estado === 'menu' && !$('#tela-menu').classList.contains('oculto') && abreDiario(), 900);
 // pré-compila os shaders da ponte, do túnel e dos obstáculos ainda na tela de carregamento: sem isso,
 // o 1º quadro na ponte/túnel travava o celular (compilação na hora) bem no meio da corrida
 try {
@@ -1560,4 +1710,5 @@ Object.defineProperties(window.__surf, Object.getOwnPropertyDescriptors({ // (de
     animaHeroi(dt); atualizaCamera(dt); BIOMAS.atualiza(R ? R.dist : 0, camera.position.z, dt);
   },
   get moedas() { return moedas; }, get itens() { return itens; }, get trechos() { return trechos; },
+  get S() { return S; }, get marca() { return marca; }, checaConquistas, abreDiario,
 }));
